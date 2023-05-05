@@ -1,0 +1,83 @@
+.rigs {
+    margin-top: 20px;
+    padding: 0 20px 0 0;
+}
+
+.rigs .title {
+    font-size: 20px;
+}
+
+.rigs .rigscontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.rigs .rigscontainer .rig {
+    display: flex;
+    align-items: center;
+
+    padding: 20px 30px;
+    border-radius: 20px;
+
+
+    background-color: #14223d79;
+    box-shadow: 0 0 0px #14223d;
+    transition: box-shadow 250ms, background-color 250ms;
+}
+
+.rigs .rigscontainer .rig:not(.active) {
+    background-color: transparent;
+}
+
+.rigs .rigscontainer .rig:hover {
+    background-color: #14223d;
+    box-shadow: 0 0 10px #14223d;
+}
+
+.rigs .rigscontainer .rig:not(.active):hover {
+    background-color: #14223d79;
+    box-shadow: 0 0 10px #14223d79;
+}
+
+.rigs .rigscontainer .rig .name {
+    font-size: 18px;
+    width: 100px;
+}
+
+.rigs .rigscontainer .rig .data {
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.rigs .rigscontainer .rig .data .collumn {width: 100px; white-space: nowrap;}
+.rigs .rigscontainer .rig .small {font-size: 14px; color: #8a8a8a;}
+.rigs .rigscontainer .rig .big {font-size: 16px;}
+
+.rigs .rigscontainer .rig .collumn.right {
+    text-align: end;
+}
+
+
+@media only screen and (max-width: 850px) {
+    .rigs .rigscontainer .rig .collumn#expired,
+    .rigs .rigscontainer .rig .collumn#invalid {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .rigs .rigscontainer .rig .collumn#lastshare {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .rigs .rigscontainer .rig .collumn#hashes {
+        display: none;
+    }
+}

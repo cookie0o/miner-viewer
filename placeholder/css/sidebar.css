@@ -1,0 +1,43 @@
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    width: 300px; height: 100vh; height: 100dvh;
+    padding: 100px 20px 50px 20px;
+    box-sizing: border-box;
+
+    overflow: hidden auto;
+}
+nav a {text-decoration: none;}
+nav navitem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #5a5a5a;
+    font-size: 20px;
+
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: background-color 250ms, color 250ms;
+}
+
+nav navitem:hover {background-color: var(--sec); color: #fff;}
+
+nav navitem i {font-size: 25px !important;}
+nav navitem.active {color: #fff;}
+nav navitem.active i {color: #4674fe;}
+
+
+
+@media only screen and (max-width: 1100px) {
+    nav {
+        width: 100%;
+        height: auto;
+        padding: 20px 20px 0 20px;
+    }
+}
