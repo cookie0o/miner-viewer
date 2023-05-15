@@ -50,7 +50,7 @@ function renderGraphs(walletDetails, existingData) {
     
     var gradient = xmrAmountGraph.getContext("2d").createLinearGradient(0,0,0,200);gradient.addColorStop(0.2, '#84dc7e44');gradient.addColorStop(1, '#84dc7e00');
     if (Chart.getChart("xmr-amount") !== undefined) {Chart.getChart("xmr-amount").destroy()}
-    new Chart(xmrAmountGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.balance,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}}});
+    new Chart(xmrAmountGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.balance,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}, layout: {autoPadding: false}}});
     
     
     // Last Block Reward Graph
@@ -67,7 +67,7 @@ function renderGraphs(walletDetails, existingData) {
     
     var gradient = lastBlockRewardGraph.getContext("2d").createLinearGradient(0,0,0,100);gradient.addColorStop(0.2, '#84dc7e44');gradient.addColorStop(1, '#84dc7e00');
     if (Chart.getChart("last-block-reward") !== undefined) {Chart.getChart("last-block-reward").destroy()}
-    new Chart(lastBlockRewardGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.last_reward,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}}});
+    new Chart(lastBlockRewardGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.last_reward,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}, layout: {autoPadding: false}}});
     
     // Hashrate Graph
     labels = []; 
@@ -90,7 +90,7 @@ function renderGraphs(walletDetails, existingData) {
     
     var gradient = hashrateGraph.getContext("2d").createLinearGradient(0,0,0,100);gradient.addColorStop(0.2, '#84dc7e44');gradient.addColorStop(1, '#84dc7e00');
     if (Chart.getChart("hashrate") !== undefined) {Chart.getChart("hashrate").destroy()}
-    new Chart(hashrateGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.hashrate,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}}});
+    new Chart(hashrateGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.hashrate,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}, layout: {autoPadding: false}}});
     
     
     
@@ -109,7 +109,7 @@ function renderGraphs(walletDetails, existingData) {
 
     var gradient = submittedHashesGraph.getContext("2d").createLinearGradient(0,0,0,100);gradient.addColorStop(0.2, '#84dc7e44');gradient.addColorStop(1, '#84dc7e00');
     if (Chart.getChart("submitted-hashes") !== undefined) {Chart.getChart("submitted-hashes").destroy()};
-    new Chart(submittedHashesGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.submittedHashes,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}}});
+    new Chart(submittedHashesGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.submittedHashes,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}, layout: {autoPadding: false}}});
 
     moneroStorage.balance = existingData.balance;
     moneroStorage.last_reward = existingData.last_reward;
@@ -124,12 +124,18 @@ function renderRigs(walletDetails) {
         active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true; activeClass = (active) ? "active" : "";
         hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
 
-
-        time = Date.now() - walletDetails.perWorkerStats[i].lastShare;
-
-        console.log(time % 86400 / 3600, time % 3600 / 60, time % 60);
-
+        if (active) {
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div></div>`);
+        }
         // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
-        $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div></div>`);
+    }
+    for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
+        active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true; activeClass = (active) ? "active" : "";
+        hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
+
+        if (!active) {
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div></div>`);
+        }
+        // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
     }
 }
