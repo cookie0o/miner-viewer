@@ -1,0 +1,41 @@
+main .settings {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+main .settings .setting {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+main .settings .setting .right {margin-left: auto;}
+
+main .settings .setting p {
+    font-size: 17px;
+}
+
+main .settings .setting input {
+    color: #5a5a5a;
+    font-size: 17px;
+
+    background-color: #141c2f;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    outline: none;
+
+    width: max-content; min-width: unset;
+    flex: 1 0 0;
+    max-width: 500px;
+    margin-right: 20px;
+}
+
+main .settings .setting input.full {max-width: unset;}
+
+main .settings .setting input:not(:placeholder-shown) {
+    color: #fff;
+}
+
+main .settings .setting input:focus-visible {outline: 1px solid #4674fe;}
