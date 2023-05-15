@@ -1,3 +1,8 @@
+// Check if xmrpool.eu key is set.
+if (localStorage.getItem("monerokey") === null) {window.open("settings/", "_self")} else {
+key = localStorage.getItem("monerokey");}
+
+
 if (localStorage.getItem("moneroStorage") !== null) {
     moneroStorage = JSON.parse(localStorage.getItem("moneroStorage"));
 } else {
@@ -9,8 +14,7 @@ if (localStorage.getItem("moneroStorage") !== null) {
 existingData = {balance: moneroStorage.balance, last_reward: moneroStorage.last_reward, hashrate: [], submittedHashes: moneroStorage.submittedHashes};
 
 async function init() {
-    stats = await $.get("https://web.xmrpool.eu:8119/stats");
-    walletDetails = await $.get("https://web.xmrpool.eu:8119/stats_address?address=41nQTjNcv2w1LUr5cUcCs8jdbmk8X1DPU3oWczodaAcmWkr59b2SSusPG24RddTf894T4RDWRVLb91GcZ4dMqjwjVA2cEbG&longpoll=false");
+    walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${key}&longpoll=false`);
     Chart.defaults.color = "#ffffff00"
     Chart.defaults.borderColor = '#85dc7e';
     Chart.defaults.backgroundColor = "#ffffff";
@@ -21,8 +25,7 @@ async function init() {
 init();
 
 setInterval(async () => {
-    stats = await $.get("https://web.xmrpool.eu:8119/stats");
-    walletDetails = await $.get("https://web.xmrpool.eu:8119/stats_address?address=41nQTjNcv2w1LUr5cUcCs8jdbmk8X1DPU3oWczodaAcmWkr59b2SSusPG24RddTf894T4RDWRVLb91GcZ4dMqjwjVA2cEbG&longpoll=false");
+    walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${key}&longpoll=false`);
     existingData = renderGraphs(walletDetails, existingData);
     renderRigs(walletDetails);
 }, 10000);
