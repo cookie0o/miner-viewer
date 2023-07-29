@@ -19,7 +19,7 @@
     </nav>
     <main>
         <div class="header">
-            <div class="searchbar"><input type="text" placeholder="Search..."><i class="fi fi-rr-search"></i></div>
+        <div class="searchbar"><input type="text" placeholder="Search..."><i class="fi fi-rr-search"></i></div>
             <i class="fi fi-rr-bell bell"></i>
         </div>
         <dashboard>
@@ -32,12 +32,12 @@
             </div>
             <div class="widget small" id="lastBlockRewardGraph">
                 <p class="small">Last Block Reward</p>
-                <p class="big"><span id="amount">0</span> XMR</p>
+                <p class="special"><span id="amount">0</span> XMR</p>
                 <canvas class="graph" id="last-block-reward"></canvas>
             </div>
             <div class="widget small" id="hashrateWidget">
                 <p class="small">Hashrate</p>
-                <p class="big"><span id="amount">0</span> H/s</p>
+                <p class="big"><span id="amount">0</span></p>
                 <canvas class="graph" id="hashrate"></canvas>
             </div>
             <div class="widget small" id="submittedHashesWidget">
@@ -47,11 +47,15 @@
             </div>
         </dashboard>
         <div class="rigs">
-            <p class="title">Your Rigs</p>
+            <p class="title">Your Miners/Rigs</p>
+            <div class="headercontainer">
+                <div class="title2"> <p>Miner/Rig Name</p> <p>Hashrate</p> <p>Accepted Hashes</p> <p>Expired Hashes</p> <p>Invalid Hashes</p> </div>
+            </div>
             <div class="rigscontainer">
             </div>
         </div>
     </main>
 </body>
 <script src="script.js" defer></script>
+
 </html>

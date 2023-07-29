@@ -31,15 +31,23 @@
 
 
 .widget p.small {
-    font-size: 20px;
+    /* font-size: 20px; */
+    font-size: 1.2vw;
     color: #8a8a8a;
     margin-bottom: 5px;
 }
 
 .widget p.big {
-    font-size: 28px;
+    /* font-size: 28px; */
+    font-size: 2.0vw;
     margin-bottom: 5px;
     white-space: nowrap;
+}
+
+.widget p.special {
+    font-size: 1.7vw;
+    margin-bottom: 5px;
+    white-space: wrap;
 }
 
 .widget p.big ~ p.small {margin-top: 10px;}
@@ -55,8 +63,43 @@
 
 
 
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1500px) {
     .widget {
         aspect-ratio: 2/1 !important;
     }
+    .widget p.small {
+        font-size: 20px;
+        color: #8a8a8a;
+        margin-bottom: 5px;
+    }
+    
+    .widget p.big {
+        font-size: 28px;
+        margin-bottom: 5px;
+        white-space: nowrap;
+    }
+    
+    .widget p.special {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }    
+}
+
+@media only screen and (min-width: 3000px) {
+    .widget p.small {
+        font-size: 45px;
+        color: #8a8a8a;
+        margin-bottom: 5px;
+    }
+    
+    .widget p.big {
+        font-size: 53px;
+        margin-bottom: 5px;
+        white-space: nowrap;
+    }
+    
+    .widget p.special {
+        font-size: 49px;
+        margin-bottom: 5px;
+    }    
 }

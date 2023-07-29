@@ -1,3 +1,5 @@
+const apiEndpoint = 'https://api.coingecko.com/api/v3/simple/price?ids=monero&vs_currencies=eur';
+
 // Check if xmrpool.eu key is set.
 if (localStorage.getItem("monerokey") === null) {window.open("settings/", "_self")} else {
 key = localStorage.getItem("monerokey");}
@@ -12,6 +14,17 @@ if (localStorage.getItem("moneroStorage") !== null) {
 
 
 existingData = {balance: moneroStorage.balance, last_reward: moneroStorage.last_reward, hashrate: [], submittedHashes: moneroStorage.submittedHashes};
+
+// format hash rate for a better readability
+function formatHashrate(hashrate) {
+    if (hashrate >= 1000000) {
+      return (hashrate / 1000000).toFixed(2) + ' M/s';
+    } else if (hashrate >= 1000) {
+      return (hashrate / 1000).toFixed(2) + ' K/s';
+    } else {
+      return hashrate.toFixed(2) + ' H/s';
+    }
+  }
 
 async function init() {
     walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${key}&longpoll=false`);
@@ -30,21 +43,56 @@ setInterval(async () => {
     renderRigs(walletDetails);
 }, 10000);
 
+function GetXMR_EUR_value(currentBalanceXMR) {
+    return new Promise((resolve, reject) => {
+        fetch(apiEndpoint)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the API response and extract the exchange rate
+            const xmrToEurRate = data.monero.eur;
+    
+            // Calculate the equivalent value in Euro
+            const currentBalanceEUR = currentBalanceXMR * xmrToEurRate;
+    
+            // Resolve the promise with euroValue
+            resolve(currentBalanceEUR);
+        })
+        .catch(error => {
+            // Reject the promise with the error
+            reject(error);
+        });
+    });
+}
+
 function renderGraphs(walletDetails, existingData) {
     const xmrAmountGraph = document.getElementById('xmr-amount');
     const lastBlockRewardGraph = document.getElementById('last-block-reward');
     const hashrateGraph = document.getElementById('hashrate');
     const submittedHashesGraph = document.getElementById('submitted-hashes');
 
-    // Xmr Amount Balance Graph
-    labels = []; currentBalance = walletDetails.stats.balance / 1000000000000;
-    if (existingData.balance.length === 0 || existingData.balance[existingData.balance.length - 1] !== currentBalance) {
+    // Xmr/Euro Amount Balance Graph
+    labels = []; currentBalanceXMR = walletDetails.stats.balance / 1000000000000;
+    if (existingData.balance.length === 0 || existingData.balance[existingData.balance.length - 1] !== currentBalanceXMR) {
         if (existingData.balance.length > 7) {
             existingData.balance.splice(0, 1);
         }
-        existingData.balance.push(currentBalance);
+        existingData.balance.push(currentBalanceXMR);
     }
-    $(".widget#balanceGraph #amountxmr").text(currentBalance);
+    $(".widget#balanceGraph #amountxmr").text(currentBalanceXMR);
+
+    // convert xmr to euro
+    GetXMR_EUR_value(currentBalanceXMR)
+    .then(currentBalanceEUR => {
+        $(".widget#balanceGraph #amount").text(currentBalanceEUR.toFixed(2));
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
     for (let i = 0; i < existingData.balance.length; i++) {labels.push('');}
     
@@ -84,7 +132,7 @@ function renderGraphs(walletDetails, existingData) {
 
     console.log(existingData);
 
-    $(".widget#hashrateWidget #amount").text(currentHertz);
+    $(".widget#hashrateWidget #amount").text(formatHashrate(currentHertz));
 
     for (let i = 0; i < existingData.hashrate.length; i++) {labels.push('');}
     
@@ -125,7 +173,7 @@ function renderRigs(walletDetails) {
         hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
 
         if (active) {
-            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div></div>`);
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="big">0</p></div><div class="collumn" id="invalid"><p class="big">0</p></div></div></div>`);
         }
         // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
     }
@@ -134,7 +182,7 @@ function renderRigs(walletDetails) {
         hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
 
         if (!active) {
-            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div></div>`);
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="big">0</p></div><div class="collumn" id="invalid"><p class="big">0</p></div></div></div>`);
         }
         // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
     }
