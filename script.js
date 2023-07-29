@@ -1,9 +1,8 @@
-const apiEndpoint = 'https://api.coingecko.com/api/v3/simple/price?ids=monero&vs_currencies=eur';
-
 // Check if xmrpool.eu key is set.
 if (localStorage.getItem("monerokey") === null) {window.open("settings/", "_self")} else {
 key = localStorage.getItem("monerokey");}
 
+_SelectedCurrency = localStorage.getItem("Currency");
 
 if (localStorage.getItem("moneroStorage") !== null) {
     moneroStorage = JSON.parse(localStorage.getItem("moneroStorage"));
@@ -12,8 +11,161 @@ if (localStorage.getItem("moneroStorage") !== null) {
     localStorage.setItem("moneroStorage", JSON.stringify(moneroStorage));
 }
 
-
 existingData = {balance: moneroStorage.balance, last_reward: moneroStorage.last_reward, hashrate: [], submittedHashes: moneroStorage.submittedHashes};
+
+// get selected currency from storage and translate it to currency Code
+function SelectedCurrency(_SelectedCurrency) {
+    const currencyCodeMap = {
+        "euro (eur)": "eur",
+        "united states dollar (usd)": "usd",
+        "japanese yen (jpy)": "jpy",
+        "british pound sterling (gbp)": "gbp",
+        "canadian dollar (cad)": "cad",
+        "australian dollar (aud)": "aud",
+        "swiss franc (chf)": "chf",
+        "chinese yuan (cny)": "cny",
+        "swedish krona (sek)": "sek",
+        "new zealand dollar (nzd)": "nzd",
+        "south korean won (krw)": "krw",
+        "singapore dollar (sgd)": "sgd",
+        "hong kong dollar (hkd)": "hkd",
+        "norwegian krone (nok)": "nok",
+        "mexican peso (mxn)": "mxn",
+        "indian rupee (inr)": "inr",
+        "russian ruble (rub)": "rub",
+        "south african rand (zar)": "zar",
+        "brazilian real (brl)": "brl",
+        "turkish lira (try)": "try",
+        "emirati dirham (aed)": "aed",
+        "danish krone (dkk)": "dkk",
+        "polish zloty (pln)": "pln",
+        "thai baht (thb)": "thb",
+        "malaysian ringgit (myr)": "myr",
+        "hungarian forint (huf)": "huf",
+        "indonesian rupiah (idr)": "idr",
+        "czech koruna (czk)": "czk",
+        "israeli new shekel (ils)": "ils",
+        "chilean peso (clp)": "clp",
+        "philippine peso (php)": "php",
+        "saudi riyal (sar)": "sar",
+        "argentine peso (ars)": "ars",
+        "colombian peso (cop)": "cop",
+        "romanian leu (ron)": "ron",
+        "peruvian sol (pen)": "pen",
+        "bangladeshi taka (bdt)": "bdt",
+        "kenyan shilling (kes)": "kes",
+        "vietnamese dong (vnd)": "vnd",
+        "nigerian naira (ngn)": "ngn",
+        "ukrainian hryvnia (uah)": "uah",
+        "moroccan dirham (mad)": "mad",
+        "algerian dinar (dzd)": "dzd",
+        "kazakhstani tenge (kzt)": "kzt",
+        "qatari riyal (qar)": "qar",
+        "egyptian pound (egp)": "egp",
+        "bahraini dinar (bhd)": "bhd",
+        "croatian kuna (hrk)": "hrk",
+        "sri lankan rupee (lkr)": "lkr",
+        "omani rial (omr)": "omr",
+        "tunisian dinar (tnd)": "tnd",
+        "guatemalan quetzal (gtq)": "gtq",
+        "panamanian balboa (pab)": "pab",
+        "costa rican colón (crc)": "crc",
+        "uruguayan peso (uyu)": "uyu",
+        "bolivian boliviano (bob)": "bob",
+        "paraguayan guarani (pyg)": "pyg",
+        "el salvadoran colón (svc)": "svc",
+        "honduran lempira (hnl)": "hnl",
+        "nicaraguan córdoba (nio)": "nio",
+        "cuban peso (cup)": "cup",
+        "ghanaian cedi (ghs)": "ghs",
+        "icelandic króna (isk)": "isk",
+        "georgian lari (gel)": "gel",
+        "mongolian tögrög (mnt)": "mnt",
+        "armenian dram (amd)": "amd",
+        "jamaican dollar (jmd)": "jmd",
+        "malawian kwacha (mwk)": "mwk",
+        "zimbabwean dollar (zwl)": "zwl",
+    };
+    const lowercaseName = _SelectedCurrency.toLowerCase();
+    return currencyCodeMap[lowercaseName] || null;
+}
+
+// get the currency symbol of the provided currency
+function getCurrencySymbol(currencyCode) {
+    const currencySymbols = {
+        eur: "€",
+        usd: "$",
+        jpy: "¥",
+        gbp: "£",
+        cad: "C$",
+        aud: "A$",
+        chf: "CHF",
+        cny: "CN¥",
+        sek: "kr",
+        nzd: "NZ$",
+        krw: "₩",
+        sgd: "S$",
+        hkd: "HK$",
+        nok: "kr",
+        mxn: "Mex$",
+        inr: "₹",
+        rub: "₽",
+        zar: "R",
+        brl: "R$",
+        try: "₺",
+        aed: "د.إ",
+        dkk: "kr",
+        pln: "zł",
+        thb: "฿",
+        myr: "RM",
+        huf: "Ft",
+        idr: "Rp",
+        czk: "Kč",
+        ils: "₪",
+        clp: "CLP$",
+        php: "₱",
+        sar: "﷼",
+        ars: "$",
+        cop: "COL$",
+        ron: "lei",
+        pen: "S/",
+        bdt: "৳",
+        kes: "Ksh",
+        vnd: "₫",
+        ngn: "₦",
+        uah: "₴",
+        mad: "د.م.",
+        dzd: "دج",
+        kzt: "₸",
+        qar: "﷼",
+        egp: "£",
+        bhd: "ب.د",
+        hrk: "kn",
+        lkr: "₨",
+        omr: "﷼",
+        tnd: "د.ت",
+        gtq: "Q",
+        pab: "B/.",
+        crc: "₡",
+        uyu: "$U",
+        bob: "Bs",
+        pyg: "₲",
+        svc: "$",
+        hnl: "L",
+        nio: "C$",
+        cup: "₱",
+        ghs: "₵",
+        isk: "kr",
+        gel: "₾",
+        mnt: "₮",
+        amd: "֏",
+        jmd: "J$",
+        mwk: "MK",
+        zwl: "Z$",
+    };
+    const code = currencyCode.toLowerCase();
+    return currencySymbols[code] || null;
+}
 
 // format hash rate for a better readability
 function formatHashrate(hashrate) {
@@ -43,7 +195,9 @@ setInterval(async () => {
     renderRigs(walletDetails);
 }, 10000);
 
-function GetXMR_EUR_value(currentBalanceXMR) {
+function GetXMR_Currency_value(currentBalanceXMR) {
+    const selectedCurrency = SelectedCurrency(_SelectedCurrency);
+    const apiEndpoint = `https://api.coingecko.com/api/v3/simple/price?ids=monero&vs_currencies=${selectedCurrency}`
     return new Promise((resolve, reject) => {
         fetch(apiEndpoint)
           .then(response => {
@@ -54,13 +208,13 @@ function GetXMR_EUR_value(currentBalanceXMR) {
         })
         .then(data => {
             // Handle the API response and extract the exchange rate
-            const xmrToEurRate = data.monero.eur;
+            const xmrToCurrencyRate = data.monero[selectedCurrency];
     
-            // Calculate the equivalent value in Euro
-            const currentBalanceEUR = currentBalanceXMR * xmrToEurRate;
+            // Calculate the equivalent value in the selected currency
+            const currentBalance = currentBalanceXMR * xmrToCurrencyRate;
     
             // Resolve the promise with euroValue
-            resolve(currentBalanceEUR);
+            resolve(currentBalance);
         })
         .catch(error => {
             // Reject the promise with the error
@@ -85,10 +239,10 @@ function renderGraphs(walletDetails, existingData) {
     }
     $(".widget#balanceGraph #amountxmr").text(currentBalanceXMR);
 
-    // convert xmr to euro
-    GetXMR_EUR_value(currentBalanceXMR)
-    .then(currentBalanceEUR => {
-        $(".widget#balanceGraph #amount").text(currentBalanceEUR.toFixed(2));
+    // convert xmr to the selected currency
+    GetXMR_Currency_value(currentBalanceXMR)
+    .then(currentBalance => {
+        $(".widget#balanceGraph #amount").text(currentBalance.toFixed(2) + " " + getCurrencySymbol(SelectedCurrency(_SelectedCurrency)));
     })
     .catch(error => {
         console.error('Error fetching data:', error);
