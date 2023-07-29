@@ -212,10 +212,14 @@ function GetXMR_Currency_value(currentBalanceXMR) {
     
             // Calculate the equivalent value in the selected currency
             const currentBalance = currentBalanceXMR * xmrToCurrencyRate;
-    
-            // Resolve the promise with euroValue
-            resolve(currentBalance);
-        })
+
+            // check if resp. is a number or not
+            if (xmrToCurrencyRate === undefined) {
+                resolve("N/A");
+              } else {
+                resolve(currentBalance.toFixed(2));
+              };
+            })
         .catch(error => {
             // Reject the promise with the error
             reject(error);
@@ -242,7 +246,7 @@ function renderGraphs(walletDetails, existingData) {
     // convert xmr to the selected currency
     GetXMR_Currency_value(currentBalanceXMR)
     .then(currentBalance => {
-        $(".widget#balanceGraph #amount").text(currentBalance.toFixed(2) + " " + getCurrencySymbol(SelectedCurrency(_SelectedCurrency)));
+        $(".widget#balanceGraph #amount").text(currentBalance + " " + getCurrencySymbol(SelectedCurrency(_SelectedCurrency)));
     })
     .catch(error => {
         console.error('Error fetching data:', error);
