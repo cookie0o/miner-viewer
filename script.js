@@ -324,23 +324,96 @@ function renderGraphs(walletDetails, existingData) {
     return existingData;
 }
 
+function formatLastShareDate(lastShareTime) {
+    // Given date in Unix timestamp format (seconds)
+    const LastShareDateMilliseconds = lastShareTime * 1000;
+
+    // Get the current date and time
+    const currentDate = new Date();
+
+    // Convert the given date to a Date object
+    const LastShareDate = new Date(LastShareDateMilliseconds);
+
+    // Calculate the time difference in milliseconds
+    const timeDifferenceInMilliseconds = currentDate - LastShareDate;
+
+    // Convert the time difference to days, hours, minutes, seconds and milliseconds
+    const daysDifference = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60 * 24));
+    const hoursDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutesDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60)) / 1000);
+    const millisecondsDifference = timeDifferenceInMilliseconds % 1000;
+
+    let lastShare;
+
+    if (daysDifference > 0) {
+        lastShare = daysDifference + " day" + (daysDifference === 1 ? "" : "s") + " ago";
+    } else if (hoursDifference > 0) {
+        lastShare = hoursDifference + " hour" + (hoursDifference === 1 ? "" : "s") + " ago";
+    } else if (minutesDifference > 0) {
+        lastShare = minutesDifference + " minute" + (minutesDifference === 1 ? "" : "s") + " ago";
+    } else if (secondsDifference > 0) {
+        lastShare = secondsDifference + " second" + (secondsDifference === 1 ? "" : "s") + " ago";
+    } else {
+        lastShare = millisecondsDifference + " millisecond" + (millisecondsDifference === 1 ? "" : "s") + " ago";
+    }
+
+    return lastShare.replace("-", "");
+}
+
 function renderRigs(walletDetails) {
     $(".rigs .rigscontainer").html("");
     for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
         active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true; activeClass = (active) ? "active" : "";
         hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
 
+        if (walletDetails.perWorkerStats[i].invalid === undefined) {invalidHashes = "0"} else {
+            invalidHashes = walletDetails.perWorkerStats[i].invalid
+            // remove invalid hashes from calculation
+            hashes = walletDetails.perWorkerStats[i].hashes - invalidHashes
+            // calculate Percentage of invalid hashes
+            invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / hashes * 100);
+            // Display Number and Percentage
+            invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
+        }
+
+        if (walletDetails.perWorkerStats[i].expired === undefined) {expiredHashes = "0"} else {
+            expiredHashes = walletDetails.perWorkerStats[i].expired
+            // remove expired hashes from calculation
+            hashes = walletDetails.perWorkerStats[i].hashes - expiredHashes
+            // calculate Percentage of expired hashes
+            expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / hashes * 100);
+            // Display Number and Percentage
+            expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
+        }
+
         if (active) {
-            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="big">0</p></div><div class="collumn" id="invalid"><p class="big">0</p></div></div></div>`);
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn"><p class="big">${expiredHashes}</p></div><div class="collumn"><p class="big">${invalidHashes}</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
         }
         // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
     }
     for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
         active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true; activeClass = (active) ? "active" : "";
-        hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
+        hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";        
+
+        if (walletDetails.perWorkerStats[i].invalid === undefined) {invalidHashes = "0"} else {
+            invalidHashes = walletDetails.perWorkerStats[i].invalid
+            // calculate Percentage of invalid hashes
+            invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / walletDetails.perWorkerStats[i].hashes * 100);
+            // Display Number and Percentage
+            invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
+        }
+
+        if (walletDetails.perWorkerStats[i].expired === undefined) {expiredHashes = "0"} else {
+            expiredHashes = walletDetails.perWorkerStats[i].expired
+            // calculate Percentage of expired hashes
+            expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / walletDetails.perWorkerStats[i].hashes * 100);
+            // Display Number and Percentage
+            expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
+        }
 
         if (!active) {
-            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="big">0</p></div><div class="collumn" id="invalid"><p class="big">0</p></div></div></div>`);
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn"><p class="big">${expiredHashes}</p></div><div class="collumn"><p class="big">${invalidHashes}</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
         }
         // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
     }
