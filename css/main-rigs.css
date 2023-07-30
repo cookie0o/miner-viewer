@@ -3,8 +3,37 @@
     padding: 0 20px 0 0;
 }
 
+.title2 {
+    margin-left: 0px;
+}
+
 .rigs .title {
     font-size: 20px;
+}
+
+.rigs .title2 {
+    font-size: 15px;
+    color: #8a8a8a;
+    margin-bottom: 3px;
+    margin-top: 3px;
+
+    display: flex;
+    align-items: center;
+}
+
+.rigs .headercontainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.rigs .title2 p {
+    margin: 0;
+    width: 100px;
+
+    flex: 1 0 0;
+    display: inline-block;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .rigs .rigscontainer {

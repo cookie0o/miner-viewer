@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="http://localhost/res/default/jQuery-3.6.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>Monero Pool - Blocks</title>
 </head>
@@ -23,8 +23,106 @@
         </div>
         <div class="settings">
             <div class="setting"><p>XMR address:</p><input type="text" class="full" id="xmraddress" placeholder="Address"></div>
+            <div class="setting"><p>Currency:</p><select id="currencySelect"></select></div>
         </div>
     </main>
+    <script>
+        const currencyCodes = [
+    "Euro (EUR)",
+    "United States Dollar (USD)",
+    "Japanese Yen (JPY)",
+    "British Pound Sterling (GBP)",
+    "Canadian Dollar (CAD)",
+    "Australian Dollar (AUD)",
+    "Swiss Franc (CHF)",
+    "Chinese Yuan (CNY)",
+    "Swedish Krona (SEK)",
+    "New Zealand Dollar (NZD)",
+    "South Korean Won (KRW)",
+    "Singapore Dollar (SGD)",
+    "Hong Kong Dollar (HKD)",
+    "Norwegian Krone (NOK)",
+    "Mexican Peso (MXN)",
+    "Indian Rupee (INR)",
+    "Russian Ruble (RUB)",
+    "South African Rand (ZAR)",
+    "Brazilian Real (BRL)",
+    "Turkish Lira (TRY)",
+    "Emirati Dirham (AED)",
+    "Danish Krone (DKK)",
+    "Polish Zloty (PLN)",
+    "Thai Baht (THB)",
+    "Malaysian Ringgit (MYR)",
+    "Hungarian Forint (HUF)",
+    "Indonesian Rupiah (IDR)",
+    "Czech Koruna (CZK)",
+    "Israeli New Shekel (ILS)",
+    "Chilean Peso (CLP)",
+    "Philippine Peso (PHP)",
+    "Saudi Riyal (SAR)",
+    "Argentine Peso (ARS)",
+    "Colombian Peso (COP)",
+    "Romanian Leu (RON)",
+    "Peruvian Sol (PEN)",
+    "Bangladeshi Taka (BDT)",
+    "Kenyan Shilling (KES)",
+    "Vietnamese Dong (VND)",
+    "Nigerian Naira (NGN)",
+    "Ukrainian Hryvnia (UAH)",
+    "Moroccan Dirham (MAD)",
+    "Algerian Dinar (DZD)",
+    "Kazakhstani Tenge (KZT)",
+    "Qatari Riyal (QAR)",
+    "Egyptian Pound (EGP)",
+    "Bahraini Dinar (BHD)",
+    "Croatian Kuna (HRK)",
+    "Sri Lankan Rupee (LKR)",
+    "Omani Rial (OMR)",
+    "Tunisian Dinar (TND)",
+    "Guatemalan Quetzal (GTQ)",
+    "Panamanian Balboa (PAB)",
+    "Costa Rican Colón (CRC)",
+    "Uruguayan Peso (UYU)",
+    "Bolivian Boliviano (BOB)",
+    "Paraguayan Guarani (PYG)",
+    "El Salvadoran Colón (SVC)",
+    "Honduran Lempira (HNL)",
+    "Nicaraguan Córdoba (NIO)",
+    "Cuban Peso (CUP)",
+    "Ghanaian Cedi (GHS)",
+    "Icelandic Króna (ISK)",
+    "Georgian Lari (GEL)",
+    "Mongolian Tögrög (MNT)",
+    "Armenian Dram (AMD)",
+    "Nicaraguan Córdoba (NIO)",
+    "Jamaican Dollar (JMD)",
+    "Malawian Kwacha (MWK)",
+    "Zimbabwean Dollar (ZWL)"
+];
+
+        const currencySelect = document.getElementById("currencySelect");
+    
+        function populateComboBox() {
+            for (const code of currencyCodes) {
+                const option = document.createElement("option");
+                option.text = code;
+                option.value = code;
+                currencySelect.appendChild(option);
+            }
+        }
+
+        function DefaultCurrency() {
+            if (localStorage.getItem("Currency") == null) {
+                localStorage.setItem("Currency", "Euro (EUR)");
+            }
+        }
+
+        // Call the function to populate the ComboBox on page load
+        populateComboBox();
+
+        // set EUR to default Currency if not in storage/set
+        DefaultCurrency();
+    </script>
 </body>
 <script src="../css/notifications.js" defer></script>
 <script src="settings.js"></script>

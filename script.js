@@ -2,6 +2,7 @@
 if (localStorage.getItem("monerokey") === null) {window.open("settings/", "_self")} else {
 key = localStorage.getItem("monerokey");}
 
+_SelectedCurrency = localStorage.getItem("Currency");
 
 if (localStorage.getItem("moneroStorage") !== null) {
     moneroStorage = JSON.parse(localStorage.getItem("moneroStorage"));
@@ -10,8 +11,172 @@ if (localStorage.getItem("moneroStorage") !== null) {
     localStorage.setItem("moneroStorage", JSON.stringify(moneroStorage));
 }
 
-
 existingData = {balance: moneroStorage.balance, last_reward: moneroStorage.last_reward, hashrate: [], submittedHashes: moneroStorage.submittedHashes};
+
+// get selected currency from storage and translate it to currency Code
+function SelectedCurrency(_SelectedCurrency) {
+    const currencyCodeMap = {
+        "euro (eur)": "eur",
+        "united states dollar (usd)": "usd",
+        "japanese yen (jpy)": "jpy",
+        "british pound sterling (gbp)": "gbp",
+        "canadian dollar (cad)": "cad",
+        "australian dollar (aud)": "aud",
+        "swiss franc (chf)": "chf",
+        "chinese yuan (cny)": "cny",
+        "swedish krona (sek)": "sek",
+        "new zealand dollar (nzd)": "nzd",
+        "south korean won (krw)": "krw",
+        "singapore dollar (sgd)": "sgd",
+        "hong kong dollar (hkd)": "hkd",
+        "norwegian krone (nok)": "nok",
+        "mexican peso (mxn)": "mxn",
+        "indian rupee (inr)": "inr",
+        "russian ruble (rub)": "rub",
+        "south african rand (zar)": "zar",
+        "brazilian real (brl)": "brl",
+        "turkish lira (try)": "try",
+        "emirati dirham (aed)": "aed",
+        "danish krone (dkk)": "dkk",
+        "polish zloty (pln)": "pln",
+        "thai baht (thb)": "thb",
+        "malaysian ringgit (myr)": "myr",
+        "hungarian forint (huf)": "huf",
+        "indonesian rupiah (idr)": "idr",
+        "czech koruna (czk)": "czk",
+        "israeli new shekel (ils)": "ils",
+        "chilean peso (clp)": "clp",
+        "philippine peso (php)": "php",
+        "saudi riyal (sar)": "sar",
+        "argentine peso (ars)": "ars",
+        "colombian peso (cop)": "cop",
+        "romanian leu (ron)": "ron",
+        "peruvian sol (pen)": "pen",
+        "bangladeshi taka (bdt)": "bdt",
+        "kenyan shilling (kes)": "kes",
+        "vietnamese dong (vnd)": "vnd",
+        "nigerian naira (ngn)": "ngn",
+        "ukrainian hryvnia (uah)": "uah",
+        "moroccan dirham (mad)": "mad",
+        "algerian dinar (dzd)": "dzd",
+        "kazakhstani tenge (kzt)": "kzt",
+        "qatari riyal (qar)": "qar",
+        "egyptian pound (egp)": "egp",
+        "bahraini dinar (bhd)": "bhd",
+        "croatian kuna (hrk)": "hrk",
+        "sri lankan rupee (lkr)": "lkr",
+        "omani rial (omr)": "omr",
+        "tunisian dinar (tnd)": "tnd",
+        "guatemalan quetzal (gtq)": "gtq",
+        "panamanian balboa (pab)": "pab",
+        "costa rican colón (crc)": "crc",
+        "uruguayan peso (uyu)": "uyu",
+        "bolivian boliviano (bob)": "bob",
+        "paraguayan guarani (pyg)": "pyg",
+        "el salvadoran colón (svc)": "svc",
+        "honduran lempira (hnl)": "hnl",
+        "nicaraguan córdoba (nio)": "nio",
+        "cuban peso (cup)": "cup",
+        "ghanaian cedi (ghs)": "ghs",
+        "icelandic króna (isk)": "isk",
+        "georgian lari (gel)": "gel",
+        "mongolian tögrög (mnt)": "mnt",
+        "armenian dram (amd)": "amd",
+        "jamaican dollar (jmd)": "jmd",
+        "malawian kwacha (mwk)": "mwk",
+        "zimbabwean dollar (zwl)": "zwl",
+    };
+    const lowercaseName = _SelectedCurrency.toLowerCase();
+    return currencyCodeMap[lowercaseName] || null;
+}
+
+// get the currency symbol of the provided currency
+function getCurrencySymbol(currencyCode) {
+    const currencySymbols = {
+        eur: "€",
+        usd: "$",
+        jpy: "¥",
+        gbp: "£",
+        cad: "C$",
+        aud: "A$",
+        chf: "CHF",
+        cny: "CN¥",
+        sek: "kr",
+        nzd: "NZ$",
+        krw: "₩",
+        sgd: "S$",
+        hkd: "HK$",
+        nok: "kr",
+        mxn: "Mex$",
+        inr: "₹",
+        rub: "₽",
+        zar: "R",
+        brl: "R$",
+        try: "₺",
+        aed: "د.إ",
+        dkk: "kr",
+        pln: "zł",
+        thb: "฿",
+        myr: "RM",
+        huf: "Ft",
+        idr: "Rp",
+        czk: "Kč",
+        ils: "₪",
+        clp: "CLP$",
+        php: "₱",
+        sar: "﷼",
+        ars: "$",
+        cop: "COL$",
+        ron: "lei",
+        pen: "S/",
+        bdt: "৳",
+        kes: "Ksh",
+        vnd: "₫",
+        ngn: "₦",
+        uah: "₴",
+        mad: "د.م.",
+        dzd: "دج",
+        kzt: "₸",
+        qar: "﷼",
+        egp: "£",
+        bhd: "ب.د",
+        hrk: "kn",
+        lkr: "₨",
+        omr: "﷼",
+        tnd: "د.ت",
+        gtq: "Q",
+        pab: "B/.",
+        crc: "₡",
+        uyu: "$U",
+        bob: "Bs",
+        pyg: "₲",
+        svc: "$",
+        hnl: "L",
+        nio: "C$",
+        cup: "₱",
+        ghs: "₵",
+        isk: "kr",
+        gel: "₾",
+        mnt: "₮",
+        amd: "֏",
+        jmd: "J$",
+        mwk: "MK",
+        zwl: "Z$",
+    };
+    const code = currencyCode.toLowerCase();
+    return currencySymbols[code] || null;
+}
+
+// format hash rate for a better readability
+function formatHashrate(hashrate) {
+    if (hashrate >= 1000000) {
+      return (hashrate / 1000000).toFixed(2) + ' M/s';
+    } else if (hashrate >= 1000) {
+      return (hashrate / 1000).toFixed(2) + ' K/s';
+    } else {
+      return hashrate.toFixed(2) + ' H/s';
+    }
+  }
 
 async function init() {
     walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${key}&longpoll=false`);
@@ -30,21 +195,108 @@ setInterval(async () => {
     renderRigs(walletDetails);
 }, 10000);
 
+function GetXMR_Currency_value(currentBalanceXMR) {
+    const selectedCurrency = SelectedCurrency(_SelectedCurrency);
+    const apiEndpoint = `https://api.coingecko.com/api/v3/simple/price?ids=monero&vs_currencies=${selectedCurrency}`;
+
+    // Function to fetch the current Monero price from the API
+    async function fetchMoneroPrice() {
+    try {
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+        return data.monero[selectedCurrency];
+    } catch (error) {
+        console.error('Error fetching Monero price:', error);
+        return null;
+    }
+    }
+
+    // Function to get the current timestamp
+    function getCurrentTimestamp() {
+        return Math.floor(Date.now() / 1000);
+    }
+
+    // Function to get the stored price and timestamp from localStorage
+    function getStoredPrice() {
+        const storedPrice = localStorage.getItem('moneroPrice');
+        const storedTimestamp = localStorage.getItem('moneroTimestamp');
+        return { price: storedPrice, timestamp: parseInt(storedTimestamp) };
+    }
+
+    // Function to set the price and timestamp in localStorage
+    function setStoredPrice(price, timestamp) {
+        localStorage.setItem('moneroPrice', price);
+        localStorage.setItem('moneroTimestamp', timestamp);
+    }
+
+    // Function to update the Monero price every 20 seconds
+    async function updateMoneroPrice() {
+        const storedData = getStoredPrice();
+        const currentTime = getCurrentTimestamp();
+
+        // Check if the stored price is less than 20 seconds old
+        if (storedData.price && currentTime - storedData.timestamp < 20) {
+            // Use the stored value
+            return storedData.price;
+        } else {
+            // Fetch the new price from the API
+            const newPrice = await fetchMoneroPrice();
+            if (newPrice) {
+                setStoredPrice(newPrice, currentTime);
+                console.log('Updated Monero price to:', newPrice);
+                return newPrice;
+            } else {
+                // If there's an error fetching the new price, use the stored value
+                console.log('Fetching Monero price failed with error:', JSON.stringify(error));
+                return storedData.price;
+            }
+    }
+    }
+
+    return new Promise((resolve, reject) => {
+    updateMoneroPrice()
+        .then((xmrToCurrencyRate) => {
+        // Calculate the equivalent value in the selected currency
+        const currentBalance = currentBalanceXMR * xmrToCurrencyRate;
+
+        // check if resp. is a number or not
+        if (xmrToCurrencyRate === undefined) {
+            resolve('N/A');
+        } else {
+            resolve(currentBalance.toFixed(2));
+        }
+        })
+        .catch((error) => {
+        // Reject the promise with the error
+        reject(error);
+        });
+    });
+}
+
 function renderGraphs(walletDetails, existingData) {
     const xmrAmountGraph = document.getElementById('xmr-amount');
     const lastBlockRewardGraph = document.getElementById('last-block-reward');
     const hashrateGraph = document.getElementById('hashrate');
     const submittedHashesGraph = document.getElementById('submitted-hashes');
 
-    // Xmr Amount Balance Graph
-    labels = []; currentBalance = walletDetails.stats.balance / 1000000000000;
-    if (existingData.balance.length === 0 || existingData.balance[existingData.balance.length - 1] !== currentBalance) {
+    // Xmr/Euro Amount Balance Graph
+    labels = []; currentBalanceXMR = walletDetails.stats.balance / 1000000000000;
+    if (existingData.balance.length === 0 || existingData.balance[existingData.balance.length - 1] !== currentBalanceXMR) {
         if (existingData.balance.length > 7) {
             existingData.balance.splice(0, 1);
         }
-        existingData.balance.push(currentBalance);
+        existingData.balance.push(currentBalanceXMR);
     }
-    $(".widget#balanceGraph #amountxmr").text(currentBalance);
+    $(".widget#balanceGraph #amountxmr").text(currentBalanceXMR);
+
+    // convert xmr to the selected currency
+    GetXMR_Currency_value(currentBalanceXMR)
+    .then(currentBalance => {
+        $(".widget#balanceGraph #amount").text(currentBalance + " " + getCurrencySymbol(SelectedCurrency(_SelectedCurrency)));
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
     for (let i = 0; i < existingData.balance.length; i++) {labels.push('');}
     
@@ -84,7 +336,7 @@ function renderGraphs(walletDetails, existingData) {
 
     console.log(existingData);
 
-    $(".widget#hashrateWidget #amount").text(currentHertz);
+    $(".widget#hashrateWidget #amount").text(formatHashrate(currentHertz));
 
     for (let i = 0; i < existingData.hashrate.length; i++) {labels.push('');}
     
@@ -118,23 +370,96 @@ function renderGraphs(walletDetails, existingData) {
     return existingData;
 }
 
+function formatLastShareDate(lastShareTime) {
+    // Given date in Unix timestamp format (seconds)
+    const LastShareDateMilliseconds = lastShareTime * 1000;
+
+    // Get the current date and time
+    const currentDate = new Date();
+
+    // Convert the given date to a Date object
+    const LastShareDate = new Date(LastShareDateMilliseconds);
+
+    // Calculate the time difference in milliseconds
+    const timeDifferenceInMilliseconds = currentDate - LastShareDate;
+
+    // Convert the time difference to days, hours, minutes, seconds and milliseconds
+    const daysDifference = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60 * 24));
+    const hoursDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutesDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60)) / 1000);
+    const millisecondsDifference = timeDifferenceInMilliseconds % 1000;
+
+    let lastShare;
+
+    if (daysDifference > 0) {
+        lastShare = daysDifference + " day" + (daysDifference === 1 ? "" : "s") + " ago";
+    } else if (hoursDifference > 0) {
+        lastShare = hoursDifference + " hour" + (hoursDifference === 1 ? "" : "s") + " ago";
+    } else if (minutesDifference > 0) {
+        lastShare = minutesDifference + " minute" + (minutesDifference === 1 ? "" : "s") + " ago";
+    } else if (secondsDifference > 0) {
+        lastShare = secondsDifference + " second" + (secondsDifference === 1 ? "" : "s") + " ago";
+    } else {
+        lastShare = millisecondsDifference + " millisecond" + (millisecondsDifference === 1 ? "" : "s") + " ago";
+    }
+
+    return lastShare.replace("-", "");
+}
+
 function renderRigs(walletDetails) {
     $(".rigs .rigscontainer").html("");
     for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
         active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true; activeClass = (active) ? "active" : "";
         hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
 
+        if (walletDetails.perWorkerStats[i].invalid === undefined) {invalidHashes = "0"} else {
+            invalidHashes = walletDetails.perWorkerStats[i].invalid
+            // remove invalid hashes from calculation
+            hashes = walletDetails.perWorkerStats[i].hashes - invalidHashes
+            // calculate Percentage of invalid hashes
+            invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / hashes * 100);
+            // Display Number and Percentage
+            invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
+        }
+
+        if (walletDetails.perWorkerStats[i].expired === undefined) {expiredHashes = "0"} else {
+            expiredHashes = walletDetails.perWorkerStats[i].expired
+            // remove expired hashes from calculation
+            hashes = walletDetails.perWorkerStats[i].hashes - expiredHashes
+            // calculate Percentage of expired hashes
+            expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / hashes * 100);
+            // Display Number and Percentage
+            expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
+        }
+
         if (active) {
-            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div></div>`);
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn"><p class="big">${expiredHashes}</p></div><div class="collumn"><p class="big">${invalidHashes}</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
         }
         // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
     }
     for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
         active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true; activeClass = (active) ? "active" : "";
-        hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
+        hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";        
+
+        if (walletDetails.perWorkerStats[i].invalid === undefined) {invalidHashes = "0"} else {
+            invalidHashes = walletDetails.perWorkerStats[i].invalid
+            // calculate Percentage of invalid hashes
+            invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / walletDetails.perWorkerStats[i].hashes * 100);
+            // Display Number and Percentage
+            invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
+        }
+
+        if (walletDetails.perWorkerStats[i].expired === undefined) {expiredHashes = "0"} else {
+            expiredHashes = walletDetails.perWorkerStats[i].expired
+            // calculate Percentage of expired hashes
+            expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / walletDetails.perWorkerStats[i].hashes * 100);
+            // Display Number and Percentage
+            expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
+        }
 
         if (!active) {
-            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div></div>`);
+            $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn"><p class="big">${expiredHashes}</p></div><div class="collumn"><p class="big">${invalidHashes}</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
         }
         // $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="small">Hashrate</p><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="small">Accepted Hashes</p><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn" id="expired"><p class="small">Expired Hashes</p><p class="big">0</p></div><div class="collumn" id="invalid"><p class="small">Invalid Hashes</p><p class="big">0</p></div></div><div class="collumn right" id="lastshare"><p class="small">Last Share</p><p class="big">Today</p></div></div>`);
     }

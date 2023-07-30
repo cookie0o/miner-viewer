@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js" integrity="sha512-CMF3tQtjOoOJoOKlsS7/2loJlkyctwzSoDK/S40iAB+MqWSaf50uObGQSk5Ny/gfRhRCjNLvoxuCvdnERU4WGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="http://localhost/res/default/jQuery-3.6.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>Monero Pool</title>
 </head>
@@ -19,25 +19,25 @@
     </nav>
     <main>
         <div class="header">
-            <div class="searchbar"><input type="text" placeholder="Search..."><i class="fi fi-rr-search"></i></div>
+        <div class="searchbar"><input type="text" placeholder="Search..."><i class="fi fi-rr-search"></i></div>
             <i class="fi fi-rr-bell bell"></i>
         </div>
         <dashboard>
             <div class="widget big" id="balanceGraph">
                 <p class="small">Balance</p>
                 <p class="big"><span id="amountxmr">0</span> XMR</p>
-                <p class="small">Balance in euro's</p>
-                <p class="big">€ <span id="amount">0</span></p>
+                <p class="small">Balance</p>
+                <p class="big"> <span id="amount">0</span></p>
                 <canvas class="graph" id="xmr-amount"></canvas>
             </div>
             <div class="widget small" id="lastBlockRewardGraph">
                 <p class="small">Last Block Reward</p>
-                <p class="big"><span id="amount">0</span> XMR</p>
+                <p class="special"><span id="amount">0</span> XMR</p>
                 <canvas class="graph" id="last-block-reward"></canvas>
             </div>
             <div class="widget small" id="hashrateWidget">
                 <p class="small">Hashrate</p>
-                <p class="big"><span id="amount">0</span> H/s</p>
+                <p class="big"><span id="amount">0</span></p>
                 <canvas class="graph" id="hashrate"></canvas>
             </div>
             <div class="widget small" id="submittedHashesWidget">
@@ -47,7 +47,10 @@
             </div>
         </dashboard>
         <div class="rigs">
-            <p class="title">Your Rigs</p>
+            <p class="title">Your Rig`s</p>
+            <div class="headercontainer">
+                <div class="title2"> <p>🔑 Worker / Rig ID</p> <p>⏲ Hashrate</p> <p>☁️ Accepted Hashes</p> <p>🕓 Expired Hashes</p> <p>⚠️Invalid Hashes</p> <p>🕓 Last Share</p> </div>
+            </div>
             <div class="rigscontainer">
             </div>
         </div>
