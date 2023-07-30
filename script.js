@@ -213,41 +213,43 @@ function GetXMR_Currency_value(currentBalanceXMR) {
 
     // Function to get the current timestamp
     function getCurrentTimestamp() {
-    return Math.floor(Date.now() / 1000);
+        return Math.floor(Date.now() / 1000);
     }
 
     // Function to get the stored price and timestamp from localStorage
     function getStoredPrice() {
-    const storedPrice = localStorage.getItem('moneroPrice');
-    const storedTimestamp = localStorage.getItem('moneroTimestamp');
-    return { price: storedPrice, timestamp: parseInt(storedTimestamp) };
+        const storedPrice = localStorage.getItem('moneroPrice');
+        const storedTimestamp = localStorage.getItem('moneroTimestamp');
+        return { price: storedPrice, timestamp: parseInt(storedTimestamp) };
     }
 
     // Function to set the price and timestamp in localStorage
     function setStoredPrice(price, timestamp) {
-    localStorage.setItem('moneroPrice', price);
-    localStorage.setItem('moneroTimestamp', timestamp);
+        localStorage.setItem('moneroPrice', price);
+        localStorage.setItem('moneroTimestamp', timestamp);
     }
 
-    // Function to update the Monero price every 10 seconds
+    // Function to update the Monero price every 20 seconds
     async function updateMoneroPrice() {
-    const storedData = getStoredPrice();
-    const currentTime = getCurrentTimestamp();
+        const storedData = getStoredPrice();
+        const currentTime = getCurrentTimestamp();
 
-    // Check if the stored price is less than 10 seconds old
-    if (storedData.price && currentTime - storedData.timestamp < 10) {
-        // Use the stored value
-        return storedData.price;
-    } else {
-        // Fetch the new price from the API
-        const newPrice = await fetchMoneroPrice();
-        if (newPrice) {
-        setStoredPrice(newPrice, currentTime);
-        return newPrice;
+        // Check if the stored price is less than 20 seconds old
+        if (storedData.price && currentTime - storedData.timestamp < 20) {
+            // Use the stored value
+            return storedData.price;
         } else {
-        // If there's an error fetching the new price, use the stored value
-        return storedData.price;
-        }
+            // Fetch the new price from the API
+            const newPrice = await fetchMoneroPrice();
+            if (newPrice) {
+                setStoredPrice(newPrice, currentTime);
+                console.log('Updated Monero price to:', newPrice);
+                return newPrice;
+            } else {
+                // If there's an error fetching the new price, use the stored value
+                console.log('Fetching Monero price failed with error:', JSON.stringify(error));
+                return storedData.price;
+            }
     }
     }
 
