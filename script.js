@@ -2,7 +2,7 @@
 if (localStorage.getItem("monerokey") === null) {window.open("settings/", "_self")} else {
 key = localStorage.getItem("monerokey");}
 
-_SelectedCurrency = localStorage.getItem("Currency");
+_SelectedCurrency = localStorage.getItem("currency");
 
 if (localStorage.getItem("moneroStorage") !== null) {
     moneroStorage = JSON.parse(localStorage.getItem("moneroStorage"));
@@ -15,154 +15,12 @@ existingData = {balance: moneroStorage.balance, last_reward: moneroStorage.last_
 
 // get selected currency from storage and translate it to currency Code
 function SelectedCurrency(_SelectedCurrency) {
-    const currencyCodeMap = {
-        "euro (eur)": "eur",
-        "united states dollar (usd)": "usd",
-        "japanese yen (jpy)": "jpy",
-        "british pound sterling (gbp)": "gbp",
-        "canadian dollar (cad)": "cad",
-        "australian dollar (aud)": "aud",
-        "swiss franc (chf)": "chf",
-        "chinese yuan (cny)": "cny",
-        "swedish krona (sek)": "sek",
-        "new zealand dollar (nzd)": "nzd",
-        "south korean won (krw)": "krw",
-        "singapore dollar (sgd)": "sgd",
-        "hong kong dollar (hkd)": "hkd",
-        "norwegian krone (nok)": "nok",
-        "mexican peso (mxn)": "mxn",
-        "indian rupee (inr)": "inr",
-        "russian ruble (rub)": "rub",
-        "south african rand (zar)": "zar",
-        "brazilian real (brl)": "brl",
-        "turkish lira (try)": "try",
-        "emirati dirham (aed)": "aed",
-        "danish krone (dkk)": "dkk",
-        "polish zloty (pln)": "pln",
-        "thai baht (thb)": "thb",
-        "malaysian ringgit (myr)": "myr",
-        "hungarian forint (huf)": "huf",
-        "indonesian rupiah (idr)": "idr",
-        "czech koruna (czk)": "czk",
-        "israeli new shekel (ils)": "ils",
-        "chilean peso (clp)": "clp",
-        "philippine peso (php)": "php",
-        "saudi riyal (sar)": "sar",
-        "argentine peso (ars)": "ars",
-        "colombian peso (cop)": "cop",
-        "romanian leu (ron)": "ron",
-        "peruvian sol (pen)": "pen",
-        "bangladeshi taka (bdt)": "bdt",
-        "kenyan shilling (kes)": "kes",
-        "vietnamese dong (vnd)": "vnd",
-        "nigerian naira (ngn)": "ngn",
-        "ukrainian hryvnia (uah)": "uah",
-        "moroccan dirham (mad)": "mad",
-        "algerian dinar (dzd)": "dzd",
-        "kazakhstani tenge (kzt)": "kzt",
-        "qatari riyal (qar)": "qar",
-        "egyptian pound (egp)": "egp",
-        "bahraini dinar (bhd)": "bhd",
-        "croatian kuna (hrk)": "hrk",
-        "sri lankan rupee (lkr)": "lkr",
-        "omani rial (omr)": "omr",
-        "tunisian dinar (tnd)": "tnd",
-        "guatemalan quetzal (gtq)": "gtq",
-        "panamanian balboa (pab)": "pab",
-        "costa rican colón (crc)": "crc",
-        "uruguayan peso (uyu)": "uyu",
-        "bolivian boliviano (bob)": "bob",
-        "paraguayan guarani (pyg)": "pyg",
-        "el salvadoran colón (svc)": "svc",
-        "honduran lempira (hnl)": "hnl",
-        "nicaraguan córdoba (nio)": "nio",
-        "cuban peso (cup)": "cup",
-        "ghanaian cedi (ghs)": "ghs",
-        "icelandic króna (isk)": "isk",
-        "georgian lari (gel)": "gel",
-        "mongolian tögrög (mnt)": "mnt",
-        "armenian dram (amd)": "amd",
-        "jamaican dollar (jmd)": "jmd",
-        "malawian kwacha (mwk)": "mwk",
-        "zimbabwean dollar (zwl)": "zwl",
-    };
     const lowercaseName = _SelectedCurrency.toLowerCase();
     return currencyCodeMap[lowercaseName] || null;
 }
 
 // get the currency symbol of the provided currency
 function getCurrencySymbol(currencyCode) {
-    const currencySymbols = {
-        eur: "€",
-        usd: "$",
-        jpy: "¥",
-        gbp: "£",
-        cad: "C$",
-        aud: "A$",
-        chf: "CHF",
-        cny: "CN¥",
-        sek: "kr",
-        nzd: "NZ$",
-        krw: "₩",
-        sgd: "S$",
-        hkd: "HK$",
-        nok: "kr",
-        mxn: "Mex$",
-        inr: "₹",
-        rub: "₽",
-        zar: "R",
-        brl: "R$",
-        try: "₺",
-        aed: "د.إ",
-        dkk: "kr",
-        pln: "zł",
-        thb: "฿",
-        myr: "RM",
-        huf: "Ft",
-        idr: "Rp",
-        czk: "Kč",
-        ils: "₪",
-        clp: "CLP$",
-        php: "₱",
-        sar: "﷼",
-        ars: "$",
-        cop: "COL$",
-        ron: "lei",
-        pen: "S/",
-        bdt: "৳",
-        kes: "Ksh",
-        vnd: "₫",
-        ngn: "₦",
-        uah: "₴",
-        mad: "د.م.",
-        dzd: "دج",
-        kzt: "₸",
-        qar: "﷼",
-        egp: "£",
-        bhd: "ب.د",
-        hrk: "kn",
-        lkr: "₨",
-        omr: "﷼",
-        tnd: "د.ت",
-        gtq: "Q",
-        pab: "B/.",
-        crc: "₡",
-        uyu: "$U",
-        bob: "Bs",
-        pyg: "₲",
-        svc: "$",
-        hnl: "L",
-        nio: "C$",
-        cup: "₱",
-        ghs: "₵",
-        isk: "kr",
-        gel: "₾",
-        mnt: "₮",
-        amd: "֏",
-        jmd: "J$",
-        mwk: "MK",
-        zwl: "Z$",
-    };
     const code = currencyCode.toLowerCase();
     return currencySymbols[code] || null;
 }
@@ -170,9 +28,9 @@ function getCurrencySymbol(currencyCode) {
 // format hash rate for a better readability
 function formatHashrate(hashrate) {
     if (hashrate >= 1000000) {
-      return (hashrate / 1000000).toFixed(2) + ' M/s';
+      return (hashrate / 1000000).toFixed(2) + ' MH/s';
     } else if (hashrate >= 1000) {
-      return (hashrate / 1000).toFixed(2) + ' K/s';
+      return (hashrate / 1000).toFixed(2) + ' KH/s';
     } else {
       return hashrate.toFixed(2) + ' H/s';
     }
@@ -193,7 +51,7 @@ setInterval(async () => {
     walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${key}&longpoll=false`);
     existingData = renderGraphs(walletDetails, existingData);
     renderRigs(walletDetails);
-}, 10000);
+}, 5000);
 
 function GetXMR_Currency_value(currentBalanceXMR) {
     const selectedCurrency = SelectedCurrency(_SelectedCurrency);
@@ -216,7 +74,7 @@ function GetXMR_Currency_value(currentBalanceXMR) {
         return Math.floor(Date.now() / 1000);
     }
 
-    // Function to get the stored price and timestamp from localStorage
+    // Function to get the stored price, timestamp from localStorage
     function getStoredPrice() {
         const storedPrice = localStorage.getItem('moneroPrice');
         const storedTimestamp = localStorage.getItem('moneroTimestamp');
@@ -233,12 +91,16 @@ function GetXMR_Currency_value(currentBalanceXMR) {
     async function updateMoneroPrice() {
         const storedData = getStoredPrice();
         const currentTime = getCurrentTimestamp();
+        // check if Price should be forced to update
+        const ForceUpdate = localStorage.getItem("ForcePriceUpdate")
 
         // Check if the stored price is less than 20 seconds old
-        if (storedData.price && currentTime - storedData.timestamp < 20) {
+        if (storedData.price && currentTime - storedData.timestamp < 20 || ForceUpdate == false) {
             // Use the stored value
             return storedData.price;
         } else {
+            // reset ForceUpdate since it will be done now
+            localStorage.setItem("ForcePriceUpdate", false);
             // Fetch the new price from the API
             const newPrice = await fetchMoneroPrice();
             if (newPrice) {
@@ -246,9 +108,9 @@ function GetXMR_Currency_value(currentBalanceXMR) {
                 console.log('Updated Monero price to:', newPrice);
                 return newPrice;
             } else {
-                // If there's an error fetching the new price, use the stored value
-                console.log('Fetching Monero price failed with error:', JSON.stringify(error));
-                return storedData.price;
+                // If there's an error fetching the new price, display its value (undefined)
+                console.log('Fetching Monero price failed', newPrice);
+                return newPrice;
             }
     }
     }
@@ -260,7 +122,7 @@ function GetXMR_Currency_value(currentBalanceXMR) {
         const currentBalance = currentBalanceXMR * xmrToCurrencyRate;
 
         // check if resp. is a number or not
-        if (xmrToCurrencyRate === undefined) {
+        if (xmrToCurrencyRate === undefined || xmrToCurrencyRate === NaN) {
             resolve('N/A');
         } else {
             resolve(currentBalance.toFixed(2));
@@ -273,13 +135,17 @@ function GetXMR_Currency_value(currentBalanceXMR) {
     });
 }
 
+// average num calc values
+let sum = 0;
+let count = 0;
+
 function renderGraphs(walletDetails, existingData) {
     const xmrAmountGraph = document.getElementById('xmr-amount');
     const lastBlockRewardGraph = document.getElementById('last-block-reward');
     const hashrateGraph = document.getElementById('hashrate');
     const submittedHashesGraph = document.getElementById('submitted-hashes');
 
-    // Xmr/Euro Amount Balance Graph
+    // Xmr/Currency Amount Balance Graph
     labels = []; currentBalanceXMR = walletDetails.stats.balance / 1000000000000;
     if (existingData.balance.length === 0 || existingData.balance[existingData.balance.length - 1] !== currentBalanceXMR) {
         if (existingData.balance.length > 7) {
@@ -342,10 +208,24 @@ function renderGraphs(walletDetails, existingData) {
     
     var gradient = hashrateGraph.getContext("2d").createLinearGradient(0,0,0,100);gradient.addColorStop(0.2, '#84dc7e44');gradient.addColorStop(1, '#84dc7e00');
     if (Chart.getChart("hashrate") !== undefined) {Chart.getChart("hashrate").destroy()}
-    new Chart(hashrateGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.hashrate,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}, layout: {autoPadding: false}}});
+    new Chart(hashrateGraph, {type: 'line',data: {labels: labels,datasets: [{label: '',data: existingData.hashrate,borderWidth: 1,lineTension: .4,pointBackgroundColor: "#ffffff00",pointBorderColor: "#ffffff00", backgroundColor: gradient}]},options: {animation: false,scales: {y: {beginAtZero: false, display: false}, x: {display: false}},plugins: {legend: {display: false},tooltip: {enabled: false}}, layout: {autoPadding: false}}});    
     
-    
-    
+    // calc average Hashrate
+    function updateAverage(newHashrate) {
+        // add 1 to count
+        count++;
+        // old hashrate´s + hashrate
+        const UpdatedHashrateFloat = parseFloat(newHashrate);
+        if (!isNaN(newHashrate)) {
+            sum += UpdatedHashrateFloat;
+        }
+        // return average
+        return (averageHashrate = sum / count);
+    }
+    // update average Hashrate
+    averageHashrate = updateAverage(currentHertz);
+    $(".widget#hashrateWidget #averageamount").text(formatHashrate(averageHashrate));
+
     // Total Hashes Submitted Graph
     labels = []; currentSubmittedHashes = walletDetails.stats.hashes;
     if (existingData.submittedHashes.length === 0 || existingData.submittedHashes[existingData.submittedHashes.length - 1] !== currentSubmittedHashes) {

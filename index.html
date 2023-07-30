@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Monero Pool</title>
 </head>
+<script src="../lists.js"></script>
 <body>
     <nav>
         <navitem class="active"><i class="fi fi-sr-home"></i>Home</navitem>
@@ -38,6 +39,8 @@
             <div class="widget small" id="hashrateWidget">
                 <p class="small">Hashrate</p>
                 <p class="big"><span id="amount">0</span></p>
+                <p class="small">∅ Hashrate</p>
+                <p class="big"><span id="averageamount">0</span></p>
                 <canvas class="graph" id="hashrate"></canvas>
             </div>
             <div class="widget small" id="submittedHashesWidget">
@@ -58,3 +61,5 @@
 </body>
 <script src="script.js" defer></script>
 </html>
+
+∅
