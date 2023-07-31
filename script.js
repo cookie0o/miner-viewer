@@ -2,6 +2,7 @@
 if (localStorage.getItem("monerokey") === null) {window.open("settings/", "_self")} else {
 key = localStorage.getItem("monerokey");}
 
+
 _SelectedCurrency = localStorage.getItem("currency");
 
 if (localStorage.getItem("moneroStorage") !== null) {
@@ -28,9 +29,9 @@ function getCurrencySymbol(currencyCode) {
 // format hash rate for a better readability
 function formatHashrate(hashrate) {
     if (hashrate >= 1000000) {
-      return (hashrate / 1000000).toFixed(2) + ' MH/s';
+      return (hashrate / 1000000).toFixed(2) + ' M/s';
     } else if (hashrate >= 1000) {
-      return (hashrate / 1000).toFixed(2) + ' KH/s';
+      return (hashrate / 1000).toFixed(2) + ' K/s';
     } else {
       return hashrate.toFixed(2) + ' H/s';
     }
@@ -138,6 +139,84 @@ function GetXMR_Currency_value(currentBalanceXMR) {
 // average num calc values
 let sum = 0;
 let count = 0;
+
+function GetXMR_Currency_value(currentBalanceXMR) {
+    const selectedCurrency = SelectedCurrency(_SelectedCurrency);
+    const apiEndpoint = `https://api.coingecko.com/api/v3/simple/price?ids=monero&vs_currencies=${selectedCurrency}`;
+
+    // Function to fetch the current Monero price from the API
+    async function fetchMoneroPrice() {
+    try {
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+        return data.monero[selectedCurrency];
+    } catch (error) {
+        console.error('Error fetching Monero price:', error);
+        return null;
+    }
+    }
+
+    // Function to get the current timestamp
+    function getCurrentTimestamp() {
+        return Math.floor(Date.now() / 1000);
+    }
+
+    // Function to get the stored price and timestamp from localStorage
+    function getStoredPrice() {
+        const storedPrice = localStorage.getItem('moneroPrice');
+        const storedTimestamp = localStorage.getItem('moneroTimestamp');
+        return { price: storedPrice, timestamp: parseInt(storedTimestamp) };
+    }
+
+    // Function to set the price and timestamp in localStorage
+    function setStoredPrice(price, timestamp) {
+        localStorage.setItem('moneroPrice', price);
+        localStorage.setItem('moneroTimestamp', timestamp);
+    }
+
+    // Function to update the Monero price every 20 seconds
+    async function updateMoneroPrice() {
+        const storedData = getStoredPrice();
+        const currentTime = getCurrentTimestamp();
+
+        // Check if the stored price is less than 20 seconds old
+        if (storedData.price && currentTime - storedData.timestamp < 20) {
+            // Use the stored value
+            return storedData.price;
+        } else {
+            // Fetch the new price from the API
+            const newPrice = await fetchMoneroPrice();
+            if (newPrice) {
+                setStoredPrice(newPrice, currentTime);
+                console.log('Updated Monero price to:', newPrice);
+                return newPrice;
+            } else {
+                // If there's an error fetching the new price, use the stored value
+                console.log('Fetching Monero price failed with error:', JSON.stringify(error));
+                return storedData.price;
+            }
+    }
+    }
+
+    return new Promise((resolve, reject) => {
+    updateMoneroPrice()
+        .then((xmrToCurrencyRate) => {
+        // Calculate the equivalent value in the selected currency
+        const currentBalance = currentBalanceXMR * xmrToCurrencyRate;
+
+        // check if resp. is a number or not
+        if (xmrToCurrencyRate === undefined) {
+            resolve('N/A');
+        } else {
+            resolve(currentBalance.toFixed(2));
+        }
+        })
+        .catch((error) => {
+        // Reject the promise with the error
+        reject(error);
+        });
+    });
+}
 
 function renderGraphs(walletDetails, existingData) {
     const xmrAmountGraph = document.getElementById('xmr-amount');
