@@ -42,29 +42,27 @@ function formatDifficulty(difficulty) {
 
 // fetch blocks from the blockchain
 async function fetchBlockData() {
-    const apiEndpoint = `https://supportxmr.com/api/pool/blocks`;
-    const response = await fetch(apiEndpoint);
-    const dataRaw = await response.json();
-    const data = dataRaw [0];
-  
-    // hash, difficulty, block height(num), Unix timestamp
-    return { hash: data.hash, diff: data.diff, height: data.height, ts: data.ts };
+  const apiEndpoint = `https://supportxmr.com/api/pool/blocks`;
+  const response = await fetch(apiEndpoint);
+  const dataRaw = await response.json();
+  return dataRaw; // Return the entire array of blocks
 }
-  
+
 // list blocks on ui
 async function ListBlocks() {
-    $(".blocks .blockscontainer").html("");
-    for (let i = 0; i < 22; i++) {
-        // fetch the block data and wait for it to be available
-        const blockData = await fetchBlockData();
+  $(".blocks .blockscontainer").html("");
+  const blockDataArray = await fetchBlockData(); // Fetch all blocks
 
-        // calculate block age from UNIX timestamp
-        const blockAge = formatTime(blockData.ts);
-        // format block difficulty
-        const difficulty = formatDifficulty(blockData.diff)
+  for (let i = 0; i < blockDataArray.length; i++) {
+      const blockData = blockDataArray[i];
 
-        $(".blocks .blockscontainer").append(`<div class="block"><p class="big">${blockData.hash}</p><div class="data"><div class="collumn"><p class="big">${difficulty}/s</p></div><div class="collumn" id="difficulty"><p class="big">${blockData.height}</p></div><div class="collumn"><p class="big">${blockAge}</p></div></div></div>`);
-    }                                        
+      // calculate block age from UNIX timestamp
+      const blockAge = formatTime(blockData.ts);
+      // format block difficulty
+      const difficulty = formatDifficulty(blockData.diff)
+
+      $(".blocks .blockscontainer").append(`<div class="block"><p class="big">${blockData.hash}</p><div class="data"><div class="collumn"><p class="big">${difficulty}/s</p></div><div class="collumn" id="difficulty"><p class="big">${blockData.height}</p></div><div class="collumn"><p class="big">${blockAge}</p></div></div></div>`);
+  }
 }
 
 // run function every 20sec
