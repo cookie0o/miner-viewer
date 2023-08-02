@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- change scale on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js" integrity="sha512-CMF3tQtjOoOJoOKlsS7/2loJlkyctwzSoDK/S40iAB+MqWSaf50uObGQSk5Ny/gfRhRCjNLvoxuCvdnERU4WGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -41,7 +43,6 @@
                 <p class="big"><span id="amount">0</span></p>
                 <p class="small">∅ Hashrate</p>
                 <p class="big"><span id="averageamount">0</span></p>
-
                 <canvas class="graph" id="hashrate"></canvas>
             </div>
             <div class="widget small" id="submittedHashesWidget">
@@ -62,5 +63,3 @@
 </body>
 <script src="script.js" defer></script>
 </html>
-
-∅
