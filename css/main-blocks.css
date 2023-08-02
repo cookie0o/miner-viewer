@@ -4,7 +4,7 @@
 }
 
 .title2 {
-    margin-left: 0px;
+    margin: 0;
 }
 
 .blocks .title {
@@ -37,7 +37,7 @@
 }
 
 .blocks .title2 p.hash {
-    margin-right: 500px;
+    margin-right: 510px;
 }
 
 .blocks .blockscontainer {
@@ -74,9 +74,9 @@
     justify-content: space-evenly;
 }
 
-.blocks .blockscontainer .block .name {
+.blocks .blockscontainer .block .hash {
     font-size: 18px;
-    width: 100px;
+    width: 600px;    
 }
 
 .blocks .blockscontainer .block .data .collumn {width: 100px; white-space: nowrap;}

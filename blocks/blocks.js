@@ -61,7 +61,7 @@ async function ListBlocks() {
       // format block difficulty
       const difficulty = formatDifficulty(blockData.diff)
 
-      $(".blocks .blockscontainer").append(`<div class="block"><p class="big">${blockData.hash}</p><div class="data"><div class="collumn"><p class="big">${difficulty}/s</p></div><div class="collumn" id="difficulty"><p class="big">${blockData.height}</p></div><div class="collumn"><p class="big">${blockAge}</p></div></div></div>`);
+      $(".blocks .blockscontainer").append(`<div class="block"><p class="hash">${blockData.hash}</p><div class="data"><div class="collumn"><p class="big">${difficulty}/s</p></div><div class="collumn" id="difficulty"><p class="big">${blockData.height}</p></div><div class="collumn"><p class="big">${blockAge}</p></div></div></div>`);
   }
 }
 
