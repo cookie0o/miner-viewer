@@ -36,10 +36,6 @@
     justify-content: space-evenly;
 }
 
-.blocks .title2 p.hash {
-    margin-right: 510px;
-}
-
 .blocks .blockscontainer {
     display: flex;
     flex-direction: column;
@@ -74,9 +70,20 @@
     justify-content: space-evenly;
 }
 
+.blocks .title2 p.hash {
+    margin-right: 510px;
+}
+.blocks .title2 p.hash_mobile {
+    margin-right: 0px;
+}
+
 .blocks .blockscontainer .block .hash {
     font-size: 18px;
     width: 600px;    
+}
+.blocks .blockscontainer .block .hash_mobile {
+    font-size: 18px;
+    width: 90px;    
 }
 
 .blocks .blockscontainer .block .data .collumn {width: 100px; white-space: nowrap;}

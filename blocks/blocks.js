@@ -48,30 +48,54 @@ async function fetchBlockData() {
   return dataRaw; // Return the entire array of blocks
 }
 
+// trim a string after 4 chars and add "..." to the end
+function trimString(string) {
+    if (string.length > 7) {
+      return string.substring(0, 7) + "...";
+    } else {
+      return string;
+    }
+}
+
 // list blocks on ui
 async function ListBlocks() {
-  $(".blocks .blockscontainer").html("");
-  const blockDataArray = await fetchBlockData(); // Fetch all blocks
+    $(".blocks .blockscontainer").html("");
+    const blockDataArray = await fetchBlockData(); // Fetch all blocks
 
-  for (let i = 0; i < blockDataArray.length; i++) {
-      const blockData = blockDataArray[i];
+    for (let i = 0; i < blockDataArray.length; i++) {
+        const blockData = blockDataArray[i];
 
-      // calculate block age from UNIX timestamp
-      const blockAge = formatTime(blockData.ts);
-      // format block difficulty
-      const difficulty = formatDifficulty(blockData.diff)
+        // calculate block age from UNIX timestamp
+        const blockAge = formatTime(blockData.ts);
+        // format block difficulty
+        const difficulty = formatDifficulty(blockData.diff)
 
-      $(".blocks .blockscontainer").append(`<div class="block"><p class="hash">${blockData.hash}</p><div class="data"><div class="collumn"><p class="big">${difficulty}/s</p></div><div class="collumn" id="difficulty"><p class="big">${blockData.height}</p></div><div class="collumn"><p class="big">${blockAge}</p></div></div></div>`);
-  }
+        if (navigator.userAgentData.mobile == true) {
+            // change display
+            hash_mobile = trimString(blockData.hash);
+            $(".blocks .blockscontainer").append(`<div class="block"><p class="hash_mobile">${hash_mobile}</p><div class="data"><div class="collumn"><p class="big">${difficulty}/s</p></div><div class="collumn" id="difficulty"><p class="big">${blockData.height}</p></div><div class="collumn"><p class="big">${blockAge}</p></div></div></div>`);
+        } else {
+            $(".blocks .blockscontainer").append(`<div class="block"><p class="hash">${blockData.hash}</p><div class="data"><div class="collumn"><p class="big">${difficulty}/s</p></div><div class="collumn" id="difficulty"><p class="big">${blockData.height}</p></div><div class="collumn"><p class="big">${blockAge}</p></div></div></div>`);  
+        }
+    }
 }
 
 // run function every 20sec
 ListBlocks();
 setInterval(ListBlocks, 20000);
 
+// if the user is using a mobile device change some website elements
+if (navigator.userAgentData.mobile == true) {
+  // Find the element with class "hash"
+  const hashElement = document.querySelector('.hash');
+  // add the hash_mobile class and remove hash class
+  if (hashElement) {
+      hashElement.classList.add('hash_mobile');
+      hashElement.classList.remove('hash');
+  }
+}
 
 // fetchBlockData.hash
-
 /**
 https://supportxmr.com/api/pool/blocks
 
