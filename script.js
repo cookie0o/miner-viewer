@@ -288,6 +288,16 @@ function formatLastShareDate(lastShareTime) {
     return lastShare.replace("-", "");
 }
 
+// trim a string after 12 chars and add "..." to the end
+function trimString_x(string, length) {
+    if (string.length > length) {
+      return string.substring(0, length) + "...";
+    } else {
+      return string;
+    }
+}
+
+
 function renderRigs(walletDetails) {
     $(".rigs .rigscontainer").html("");
     for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
@@ -316,8 +326,10 @@ function renderRigs(walletDetails) {
 
         if (active) {
             if (navigator.userAgentData.mobile == true) {
+                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 12)
                 $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
             } else {
+                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 20)
                 $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn"><p class="big">${expiredHashes}</p></div><div class="collumn"><p class="big">${invalidHashes}</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
             }
         }
@@ -345,8 +357,10 @@ function renderRigs(walletDetails) {
 
         if (!active) {
             if (navigator.userAgentData.mobile == true) {
-                $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
+                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 12)
+                $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
             } else {
+                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 20)
                 $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn"><p class="big">${expiredHashes}</p></div><div class="collumn"><p class="big">${invalidHashes}</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
             }
         }
