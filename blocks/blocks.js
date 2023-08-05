@@ -50,8 +50,8 @@ async function fetchBlockData() {
 
 // trim a string after 4 chars and add "..." to the end
 function trimString(string) {
-    if (string.length > 7) {
-      return string.substring(0, 7) + "...";
+    if (string.length > 3) {
+      return string.substring(0, 3) + "...";
     } else {
       return string;
     }
@@ -94,6 +94,34 @@ if (navigator.userAgentData.mobile == true) {
       hashElement.classList.remove('hash');
   }
 }
+
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('navbar_btn_');
+
+// Function to open the sidebar
+function openSidebar() {
+  sidebar.classList.remove('sidebar-closed');
+  sidebar.classList.add('sidebar-open');
+}
+
+// Function to close the sidebar
+function closeSidebar() {
+  sidebar.classList.remove('sidebar-open');
+  sidebar.classList.add('sidebar-closed');
+}
+
+// Function to toggle the sidebar on button click
+function toggleSidebar() {
+  console.log("clicked");
+  if (sidebar.classList.contains('sidebar-open')) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+}
+// Event listener to toggle the sidebar on button click
+toggleBtn.addEventListener('click', toggleSidebar);
+
 
 // fetchBlockData.hash
 /**

@@ -326,8 +326,8 @@ function renderRigs(walletDetails) {
 
         if (active) {
             if (navigator.userAgentData.mobile == true) {
-                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 12)
-                $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
+                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 5)
+                $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
             } else {
                 workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 20)
                 $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${walletDetails.perWorkerStats[i].workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn" id="hashes"><p class="big">${walletDetails.perWorkerStats[i].hashes}</p></div><div class="collumn"><p class="big">${expiredHashes}</p></div><div class="collumn"><p class="big">${invalidHashes}</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
@@ -357,7 +357,7 @@ function renderRigs(walletDetails) {
 
         if (!active) {
             if (navigator.userAgentData.mobile == true) {
-                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 12)
+                workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 5)
                 $(".rigs .rigscontainer").append(`<div class="rig ${activeClass}"><p class="name">${workerId}</p><div class="data"><div class="collumn"><p class="big">${hashrate}/s</p></div><div class="collumn"><p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p></div></div></div>`);
             } else {
                 workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 20)
@@ -389,8 +389,6 @@ if (navigator.userAgentData.mobile == true) {
 
 
 
-
-
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('navbar_btn_');
 
@@ -415,6 +413,5 @@ function toggleSidebar() {
     openSidebar();
   }
 }
-
 // Event listener to toggle the sidebar on button click
 toggleBtn.addEventListener('click', toggleSidebar);
