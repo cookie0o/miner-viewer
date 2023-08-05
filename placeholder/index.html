@@ -10,18 +10,26 @@
 </head>
 <script src="../lists.js"></script>
 <body>
-    <nav>
-        <a href="../"><navitem><i class="fi fi-rr-home"></i>Home</navitem></a>
-        <navitem class="active"><i class="fi fi-sr-dice-d6"></i>Blocks</navitem>
-        <a href=""><navitem><i class="fi fi-rr-sack-dollar"></i>Pool Payments</navitem></a>
-        <a href=""><navitem><i class="fi fi-rr-wallet"></i>Wallet</navitem></a>
-        <a href=""><navitem><i class="fi fi-rr-settings"></i>Settings</navitem></a>
-    </nav>
+    <div class="sidebar" id="sidebar">
+        <nav>
+          <a href="../"><navitem><i class="fi fi-rr-home"></i>Home</navitem></a>
+          <navitem class="active"><i class="fi fi-sr-dice-d6"></i>Blocks</navitem>
+          <a href="../payments/"><navitem><i class="fi fi-rr-donate"></i>Pool Payments</navitem></a>
+          <a href="../wallet/"><navitem><i class="fi fi-rr-wallet"></i>Wallet</navitem></a>
+          <a href="../settings/"><navitem><i class="fi fi-rr-settings"></i>Settings</navitem></a>
+      </nav>
+    </div>
     <main>
         <div class="header">
-            <div class="searchbar"><input type="text" placeholder="Search..."><i class="fi fi-rr-search"></i></div>
+            <div class="navbar_btn" > 
+                <button id="navbar_btn_"><i class="fi fi-rr-menu-burger"></i>
+            </div>
+            <div class="searchbar"> 
+                <input type="text" placeholder="Search..."><i class="fi fi-rr-search"></i>
+            </div>
             <i class="fi fi-rr-bell bell"></i>
         </div>
     </main>
 </body>
+<script src="../script.js"></script>
 </html>
