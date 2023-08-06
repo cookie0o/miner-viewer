@@ -1,5 +1,4 @@
-const sidebar = document.getElementById('sidebar');
-const toggleBtn = document.getElementById('navbar_btn_');
+import {toggleBtn , sidebar} from 'var.js';
 
 // Function to open the sidebar
 function openSidebar() {
