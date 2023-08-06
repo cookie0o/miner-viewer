@@ -1,5 +1,6 @@
 // Check if xmrpool.eu key is set and valid
-const { key_check, StorageKey } = await import('../var.js');
+StorageKey = localStorage.getItem("monerokey");
+Key_check = StorageKey.match(/4[0-9AB][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{93}/);
 if (StorageKey === null || Key_check == null) {
   window.open("../settings", "_self");
   console.log("XMR key check failed: " + JSON.stringify(StorageKey));
