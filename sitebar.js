@@ -1,4 +1,4 @@
-import {toggleBtn , sidebar} from 'var.js';
+const { toggleBtn , sidebar} = await import('var.js');
 
 // Function to open the sidebar
 function openSidebar() {
