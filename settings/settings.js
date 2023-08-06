@@ -1,3 +1,4 @@
+
 // Save XMR address
 if (localStorage.getItem("monerokey") !== null) {$("input#xmraddress").val(localStorage.getItem("monerokey"))}
 
@@ -11,8 +12,6 @@ $("#currencySelect").on("change", function() {
     // force XMR Price update
     localStorage.setItem("ForcePriceUpdate", true);
 });
-
-
 
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('navbar_btn_');
@@ -40,3 +39,13 @@ function toggleSidebar() {
 }
 // Event listener to toggle the sidebar on button click
 toggleBtn.addEventListener('click', toggleSidebar);
+
+// open sidebar when screen is over 1500px
+function handleScreenChange(event) {
+  if (event.matches) {
+      openSidebar();
+  }
+}
+const mediaQuery = window.matchMedia("(min-width: 1500px)");
+handleScreenChange(mediaQuery);
+mediaQuery.addListener(handleScreenChange);
