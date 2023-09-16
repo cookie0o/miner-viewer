@@ -254,16 +254,18 @@ function renderGraphs(values, existingData) {
   // calc average Hashrate
   let sum = 0
   function updateAverage(newHashrate) {
-    // old hashrate´s + hashrate
-    const UpdatedHashrateFloat = parseFloat(newHashrate);
-    if (!isNaN(newHashrate)) {
-      for (let i = 0; i < moneroStorage.hashrate.length; i++) {
-        sum = sum + parseInt(moneroStorage.hashrate[i])
+    try {
+      // old hashrate´s + hashrate
+      const UpdatedHashrateFloat = parseFloat(newHashrate);
+      if (!isNaN(newHashrate)) {
+        for (let i = 0; i < moneroStorage.hashrate.length; i++) {
+          sum = sum + parseInt(moneroStorage.hashrate[i])
+        }
       }
-    }
-    let x = moneroStorage.hashrate.length + 1
-    // return average
-    return (sum / x);
+      let x = moneroStorage.hashrate.length + 1
+      // return average
+      return (sum / x);
+    } catch {return 0}
   }
 
   // Update average Hashrate
