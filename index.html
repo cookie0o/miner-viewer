@@ -1,72 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- change scale on mobile devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <head>
+    <title>main</title>
+    <!-- shared CSS -->
+    <link rel="stylesheet" href="./shared/css/color-variables.css">
+    <link rel="stylesheet" href="./shared/css/sidebar.css">
+    <link rel="stylesheet" href="./shared/css/style.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="./homePage/css/style.css">
+    <link rel="stylesheet" href="./homePage/css/miners.css">
+  </head>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js" integrity="sha512-CMF3tQtjOoOJoOKlsS7/2loJlkyctwzSoDK/S40iAB+MqWSaf50uObGQSk5Ny/gfRhRCjNLvoxuCvdnERU4WGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <title>Monero Pool</title>
-</head>
-<script src="./lists.js"></script>
-<body>
-    <div class="sidebar" id="sidebar">
-        <nav>
-          <navitem class="active"><i class="fi fi-sr-home"></i>Home</navitem>
-          <a href="blocks/"><navitem><i class="fi fi-rr-dice-d6"></i>Blocks</navitem></a>
-          <a href="payments/"><navitem><i class="fi fi-rr-donate"></i>Pool Payments</navitem></a>
-          <a href="wallet/"><navitem><i class="fi fi-rr-wallet"></i>Wallet</navitem></a>
-          <a href="settings/"><navitem><i class="fi fi-rr-settings"></i>Settings</navitem></a>
-        </nav>
+  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js"></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+  <script type="module" src="./shared/js/lists.js"></script>
+
+  <!-- sidebar -->
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <navitem class="active"><i class="fi fi-rr-home"></i>Home</navitem>
+      <a href="./settingsPage/settingsPage.html"><navitem><i class="fi fi-rr-settings"></i>Settings</navitem></a>
+    </nav>
+  </div>
+  <!-- main site content -->
+  <body>
+    <div class="sidebar_btn"> 
+      <button id="sidebar_btn"><i class="fi fi-rr-menu-burger"></i>
+    </div>  
+    <main id="main">
+      <div class="active-pools" id="active-pools" style="left: 55px;">
+        <p>Active Pools:</p>
+
+        <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu" id="active_xmrpool_eu" style="height: 25px; display: none;">
+
+      </div>
+
+      <dashboard>
+        <div class="widget big" id="balanceGraph" style="min-width: 300px">
+            <p class="small">Balance</p>
+            <p class="big"><span id="amountxmr">0</span> XMR</p>
+            <p class="small">Balance</p>
+            <p class="big"> <span id="amount">0</span></p>
+            <canvas class="graph" id="xmr-amount"></canvas>
+        </div>
+        <div class="widget small" id="lastBlockRewardGraph" style="min-width: 260px;">
+            <p class="small">Last Block Reward</p>
+            <p class="special"><span id="amount">0</span> XMR</p>
+            <canvas class="graph" id="last-block-reward"></canvas>
+        </div>
+        <div class="widget small" id="hashrateWidget" style="min-width: 195px">
+            <p class="small">Hashrate</p>
+            <p class="big"><span id="amount">0</span></p>
+            <p class="small">∅ Hashrate</p>
+            <p class="big"><span id="averageamount">0</span></p>
+            <canvas class="graph" id="hashrate"></canvas>
+        </div>
+        <div class="widget small" id="submittedHashesWidget" style="min-width: 250px">
+            <p class="small">Total Hashes Submitted</p>
+            <p class="big" id="amount">0</p>
+            <canvas class="graph" id="submitted-hashes"></canvas>
+        </div>
+      </dashboard>
+      <div class="rigs">
+        <p class="title">Your Rig`s</p>
+        <div class="headercontainer">
+            <div class="title2"> <p>🔑 Worker / Rig ID</p> <p>⏲ Hashrate</p> <p>☁️ Accepted Hashes</p> <p>🕓 Expired Hashes</p> <p>⚠️Invalid Hashes</p> <p>🕓 Last Share</p> </div>
+        </div>
+        <div class="rigscontainer">
+        </div>
     </div>
-    <main>
-        <div class="header">
-            <div class="navbar_btn" > 
-                <button id="navbar_btn_"><i class="fi fi-rr-menu-burger"></i>
-            </div>
-            <div class="searchbar"> 
-                <input type="text" placeholder="Search..."><i class="fi fi-rr-search"></i>
-            </div>
-            <i class="fi fi-rr-bell bell"></i>
-        </div>
-        <dashboard>
-            <div class="widget big" id="balanceGraph">
-                <p class="small">Balance</p>
-                <p class="big"><span id="amountxmr">0</span> XMR</p>
-                <p class="small">Balance</p>
-                <p class="big"> <span id="amount">0</span></p>
-                <canvas class="graph" id="xmr-amount"></canvas>
-            </div>
-            <div class="widget small" id="lastBlockRewardGraph">
-                <p class="small">Last Block Reward</p>
-                <p class="special"><span id="amount">0</span> XMR</p>
-                <canvas class="graph" id="last-block-reward"></canvas>
-            </div>
-            <div class="widget small" id="hashrateWidget">
-                <p class="small">Hashrate</p>
-                <p class="big"><span id="amount">0</span></p>
-                <p class="small">∅ Hashrate</p>
-                <p class="big"><span id="averageamount">0</span></p>
-                <canvas class="graph" id="hashrate"></canvas>
-            </div>
-            <div class="widget small" id="submittedHashesWidget">
-                <p class="small">Total Hashes Submitted</p>
-                <p class="big" id="amount">0</p>
-                <canvas class="graph" id="submitted-hashes"></canvas>
-            </div>
-        </dashboard>
-        <div class="rigs">
-            <p class="title">Your Rig`s</p>
-            <div class="headercontainer">
-                <div class="title2"> <p>🔑 Worker / Rig ID</p> <p>⏲ Hashrate</p> <p>☁️ Accepted Hashes</p> <p>🕓 Expired Hashes</p> <p>⚠️Invalid Hashes</p> <p>🕓 Last Share</p> </div>
-            </div>
-            <div class="rigscontainer">
-            </div>
-        </div>
     </main>
-</body>
-<script src="script.js" defer></script>
+  </body>
+  <!-- shared JS -->
+  <script src="./shared/js/sidebar.js"></script>
+  <!-- JS -->
+  <script src="./homePage/js/script.js"></script>
+  <script type="module" src="./web/renderGraphs.js"></script>
+  <!-- JS pools -->
+  <script type="module" src="./web/xmrpool_eu.js"></script>
 </html>

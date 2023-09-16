@@ -1,0 +1,83 @@
+/* Import the variables file */
+@import '../../shared/css/color-variables.css';
+/* Import Icons */
+@import 'https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css';
+
+
+/* Styling */
+main dashboard {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 20px;
+  padding: 0 0px 0px 0;
+  max-height: 300px;
+}
+
+.widget {
+  background-color: var(--secondary);
+  border-radius: 20px;
+
+  box-sizing: border-box;
+  padding: 20px;
+  height: 200px;
+  width: 100%;
+
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+.widgets.ver {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 0 0;
+}
+
+.widget .small {
+  /* font-size: 20px; */
+  font-size: 20px;
+  margin: 0px;
+  color: var(--primary);
+}
+
+.widget .big {
+  /* font-size: 28px; */
+  font-size: 35px;
+  margin: 0px;
+}
+
+.widget .special {
+  font-size: 30px;
+  margin: 0px;
+}
+
+.widget .big ~ .small {margin-top: 10px;}
+
+.widget .graph {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100% !important; height: 100% !important;
+}
+
+
+main .active-pools {
+  position: absolute;
+  z-index: 1;
+
+  top: -47px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main .active-pools img {
+  position: relative;
+
+  padding-left: 7px;
+  padding-bottom: 2px;
+}
+
+
