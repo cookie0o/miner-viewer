@@ -258,9 +258,8 @@ function renderGraphs(values, existingData) {
     const UpdatedHashrateFloat = parseFloat(newHashrate);
     if (!isNaN(newHashrate)) {
       for (let i = 0; i < moneroStorage.hashrate.length; i++) {
-        sum += moneroStorage.hashrate[i];
+        sum = sum + parseInt(moneroStorage.hashrate[i])
       }
-        sum = UpdatedHashrateFloat + sum
     }
     let x = moneroStorage.hashrate.length + 1
     // return average

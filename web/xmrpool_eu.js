@@ -19,6 +19,13 @@ if (localStorage.getItem("moneroStorage") !== null) {
   console.log(moneroStorage)
 }
 
+var existingData = {
+  balance: moneroStorage.balance,
+  last_reward: moneroStorage.last_reward,
+  hashrate: [],
+  submittedHashes: moneroStorage.submittedHashes
+};
+
 // import functions for later use
 import {
   formatLastShareDate, // (lastShareTime)
