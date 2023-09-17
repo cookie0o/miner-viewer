@@ -1,0 +1,23 @@
+{
+  "short_name": "Miner Monitor",
+  "name": "Miner Monitor",
+  "icons": [
+    {
+      "src": "/homePage/res/xmrpool_eu.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/homePage/res/xmrpool_eu_big.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "background_color": "#24898f",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#24898f",
+  "description": "Miner Monitor for different Pools"
+}
+  

@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>main</title>
+    <link rel="manifest" href="./manifest.json" />
+
+    <meta name="theme-color" content="#24898f"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <meta name="description" content="Site to manage and monitor pool miners">
+
+    <link rel="icon" type="image/x-icon" href="./shared/res/favicon.png">
+    <title>miner-checker (home)</title>
+
+
     <!-- shared CSS -->
     <link rel="stylesheet" href="./shared/css/color-variables.css">
-    <link rel="stylesheet" href="./shared/css/sidebar.css">
+    <link rel="stylesheet" href="./shared/css/sidebar.css" defer>
     <link rel="stylesheet" href="./shared/css/style.css">
     <!-- CSS -->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css' defer>
     <link rel="stylesheet" href="./homePage/css/style.css">
-    <link rel="stylesheet" href="./homePage/css/miners.css">
+    <link rel="stylesheet" href="./homePage/css/miners.css" defer>
   </head>
 
   <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js"></script>
@@ -25,13 +36,13 @@
   <!-- main site content -->
   <body>
     <div class="sidebar_btn"> 
-      <button id="sidebar_btn"><i class="fi fi-rr-menu-burger"></i>
+      <button id="sidebar_btn"><i class="fi fi-rr-menu-burger" title="burger-menu"></i>
     </div>  
     <main id="main">
       <div class="active-pools" id="active-pools" style="left: 55px;">
         <p>Active Pools:</p>
 
-        <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu" id="active_xmrpool_eu" style="height: 25px; display: none;">
+        <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu" id="active_xmrpool_eu" style="height:25px;width:25px; display: none;">
 
       </div>
 
@@ -71,8 +82,8 @@
     </div>
     </main>
   </body>
-  <!-- shared JS -->
-  <script src="./shared/js/sidebar.js"></script>
+  <!-- shared JS --> 
+  <script src="./shared/js/sidebar.js" defer></script>
   <!-- JS -->
   <script src="./homePage/js/script.js"></script>
   <script type="module" src="./web/renderGraphs.js"></script>

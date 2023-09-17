@@ -116,7 +116,7 @@ function renderRigs(walletDetails) {
       workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 10);
       $(".rigs .rigscontainer").append(`
       <div class="rig ${activeClass}">
-        <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+      <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu miner" style="height:20px;width:20px; padding-right: 8px">
         <p class="name">${workerId}</p>
         <div class="data">
           <div class="collumn">
@@ -168,7 +168,7 @@ function renderRigs(walletDetails) {
       var workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 10);
       $(".rigs .rigscontainer").append(`
       <div class="rig ${activeClass}">
-        <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+        <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu miner" style="height:20px;width:20px; padding-right: 8px">
         <p class="name">${walletDetails.perWorkerStats[i].workerId}</p>
         <div class="data">
           <div class="collumn">
