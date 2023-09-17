@@ -40,5 +40,5 @@ function populateComboBox() {
     localStorage.setItem("currency", "Euro (EUR)");
   }
 }
-// run function when window is loaded
-window.onload = populateComboBox();
+// run function
+populateComboBox();
