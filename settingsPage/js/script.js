@@ -26,19 +26,3 @@ document.getElementById('donate_btn').addEventListener('click', function() {
 import {
   currencyCodes
 } from '../shared/js/lists.js';
-
-const currencySelect = document.getElementById("currencySelect");
-function populateComboBox() {
-  for (const code of currencyCodes) {
-    const option = document.createElement("option");
-    option.text = code;
-    option.value = code;
-    currencySelect.appendChild(option);
-  }
-  // if no currency is set refer to default: EUR
-  if (localStorage.getItem("currency") == null) {
-    localStorage.setItem("currency", "Euro (EUR)");
-  }
-}
-// run function
-populateComboBox();

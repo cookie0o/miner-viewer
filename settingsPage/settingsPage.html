@@ -41,6 +41,23 @@
         <div class="setting"><p>Donate:</p><button id="donate_btn">here :)</button>
       </div>
 
+      <script>
+        const currencySelect = document.getElementById("currencySelect");
+        function populateComboBox() {
+          for (const code of currencyCodes) {
+            const option = document.createElement("option");
+            option.text = code;
+            option.value = code;
+            currencySelect.appendChild(option);
+          }
+          // if no currency is set refer to default: EUR
+          if (localStorage.getItem("currency") == null) {
+            localStorage.setItem("currency", "Euro (EUR)");
+          }
+        }
+        // run function
+        populateComboBox();
+      </script>
     </main>
   </body>
   <!-- shared JS -->
