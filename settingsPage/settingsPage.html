@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="manifest" href="./manifest.json" />
+    <link rel="manifest" href="../manifest.json" />
 
     <meta name="theme-color" content="#24898f"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.5">
     <meta name="description" content="Site to manage and monitor pool miners">
     
-    <link rel="icon" type="image/x-icon" href="./shared/res/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../shared/res/favicon.png">
     <title>miner-checker (settings)</title>
 
     <!-- shared CSS -->
@@ -41,7 +41,12 @@
         <div class="setting"><p>Donate:</p><button id="donate_btn">here :)</button>
       </div>
 
-      <script>
+      <script type="module">
+        // populate the ComboBox on page load
+        import {
+          currencyCodes
+        } from '../shared/js/lists.js';
+
         const currencySelect = document.getElementById("currencySelect");
         function populateComboBox() {
           for (const code of currencyCodes) {

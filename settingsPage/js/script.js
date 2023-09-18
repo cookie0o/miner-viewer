@@ -21,8 +21,3 @@ document.getElementById('donate_btn').addEventListener('click', function() {
 });
 
 
-
-// populate the ComboBox on page load
-import {
-  currencyCodes
-} from '../shared/js/lists.js';
