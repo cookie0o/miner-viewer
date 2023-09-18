@@ -3,14 +3,9 @@
   "name": "Miner Monitor",
   "icons": [
     {
-      "src": "/homePage/res/xmrpool_eu.png",
+      "src": "/shared/res/logo.png",
       "type": "image/png",
-      "sizes": "32x32"
-    },
-    {
-      "src": "/homePage/res/xmrpool_eu_big.png",
-      "type": "image/png",
-      "sizes": "64x64"
+      "sizes": "640x640"
     }
   ],
   "start_url": "/?source=pwa",
