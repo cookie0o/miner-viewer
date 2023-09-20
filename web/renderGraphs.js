@@ -28,21 +28,29 @@ function values() {
   localStorage.getItem("xmrpool_eu.balance");
   try {
     xmrpool_balance = localStorage.getItem("xmrpool_eu.balance");
+    if (nanopool_balance == null) {nanopool_balance = 0}
     xmrpool_last_reward = localStorage.getItem("xmrpool_eu.last_reward");
+    if (xmrpool_last_reward == null) {xmrpool_last_reward = 0}
     xmrpool_hashrate = localStorage.getItem("xmrpool_eu.hashrate");
+    if (xmrpool_hashrate == null) {xmrpool_hashrate = 0}
     xmrpool_total_hashes = localStorage.getItem("xmrpool_eu.total_hashes");
+    if (xmrpool_total_hashes == null) {xmrpool_total_hashes = 0}
   } catch { 
     xmrpool_balance, xmrpool_last_reward, xmrpool_hashrate, xmrpool_total_hashes = 0
   }
 
   // nanopool.org
   var nanopool_balance, nanopool_last_reward, nanopool_hashrate, nanopool_total_hashes
-  nanopool_balance = localStorage.getItem("nanopool_org.balance");
+  console.log(localStorage.getItem("nanopool_org.balance"));
   try {
     nanopool_balance = localStorage.getItem("nanopool_org.balance");
+    if (nanopool_balance == null) {nanopool_balance = 0}
     nanopool_last_reward = localStorage.getItem("nanopool_org.last_reward");
+    if (nanopool_last_reward == null) {nanopool_last_reward = 0}
     nanopool_hashrate = localStorage.getItem("nanopool_org.hashrate");
+    if (nanopool_hashrate == null) {nanopool_hashrate = 0}
     nanopool_total_hashes = localStorage.getItem("nanopool_org.total_hashes");
+    if (nanopool_total_hashes == null) {nanopool_total_hashes = 0}
   } catch { 
     nanopool_balance, nanopool_last_reward, nanopool_hashrate, nanopool_total_hashes = 0
   }
