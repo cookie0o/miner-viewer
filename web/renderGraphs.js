@@ -25,7 +25,6 @@ function values() {
   // Retrieve values from local storage
   // xmrpool.eu
   var xmrpool_balance, xmrpool_last_reward, xmrpool_hashrate, xmrpool_total_hashes
-  localStorage.getItem("xmrpool_eu.balance");
   try {
     xmrpool_balance = localStorage.getItem("xmrpool_eu.balance");
     if (nanopool_balance == null) {nanopool_balance = 0}
@@ -41,7 +40,6 @@ function values() {
 
   // nanopool.org
   var nanopool_balance, nanopool_last_reward, nanopool_hashrate, nanopool_total_hashes
-  console.log(localStorage.getItem("nanopool_org.balance"));
   try {
     nanopool_balance = localStorage.getItem("nanopool_org.balance");
     if (nanopool_balance == null) {nanopool_balance = 0}

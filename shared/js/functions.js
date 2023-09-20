@@ -122,13 +122,15 @@ function get_return_rate(currentBalanceXMR) {
       // Use the stored value
       return storedData.price;
     } else {
-        // reset ForceUpdate since it will be done now
+      // reset ForceUpdate since it will be done now
       localStorage.setItem("ForcePriceUpdate", false);
       // Fetch the new price from the API
       const newPrice = await fetchMoneroPrice();
       if (newPrice) {
+        if (newPrice != storedData.price) {
+          console.log('Updated Monero price to:', newPrice);
+        }
         setStoredPrice(newPrice, currentTime);
-        console.log('Updated Monero price to:', newPrice);
         return newPrice;
       } else {
         // If there's an error fetching the new price, display its value (undefined)
