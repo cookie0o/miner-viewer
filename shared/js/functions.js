@@ -156,6 +156,19 @@ function get_return_rate(currentBalanceXMR) {
       });
   });
 }  
+
+// remove symbols and just leave the raw hashrate value
+function unformatHashrate(hashrateStr) {
+  const unitMultipliers = { KH: 1e3, MH: 1e6, GH: 1e9, TH: 1e12, PH: 1e15 };
+  const [value, unit] = hashrateStr.split(' ');
+  if (unit in unitMultipliers) {
+    const hashrate = parseFloat(value) * unitMultipliers[unit];
+    const formattedHashrate = hashrate.toFixed(0);
+    return formattedHashrate;
+  } else {
+    return 'Invalid unit';
+  }
+}
     
 // export functions
 export {
@@ -163,6 +176,7 @@ export {
   SelectedCurrency,
   getCurrencySymbol,
   formatHashrate,
+  unformatHashrate,
   trimString_x,
   get_return_rate
 };

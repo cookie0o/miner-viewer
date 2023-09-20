@@ -1,6 +1,42 @@
-.title2 {
-    margin-left: 0px;
+
+
+.rigs .headercontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
+
+.rigs .headercontainer .title2 {
+    display: flex;
+    align-items: center;
+
+    padding: 0px 2cqb;
+}
+
+.rigs .headercontainer .title2 .name {
+    width: 110px;
+}
+
+.rigs .headercontainer .title2 .definition {
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.rigs .headercontainer .title2 .collumn {width: 100px; white-space: nowrap;}
+.rigs .headercontainer .title2 .big {font-size: 16px;}
+
+.rigs .headercontainer .title2 .collumn.right {
+    text-align: end;
+}
+
+
+
+
+
+
+
 
 .rigs {
     min-width: 1065px;
@@ -8,31 +44,6 @@
 
 .rigs .title {
     font-size: 20px;
-}
-
-.rigs .title2 {
-    font-size: 15px;
-    color: #8a8a8a;
-    margin-bottom: 3px;
-    margin-top: 0px;
-
-    display: flex;
-    align-items: center;
-}
-
-.rigs .headercontainer {
-    display: flex;
-    flex-direction: column;
-}
-
-.rigs .title2 p {
-    margin: 0;
-    width: 100px;
-
-    flex: 1 0 0;
-    display: inline-block;
-    align-items: center;
-    justify-content: space-evenly;
 }
 
 .rigs .rigscontainer {
@@ -49,7 +60,7 @@
 
     padding: 0px 2cqb;
     border-radius: 20px;
-
+ 
 
     background-color: var(--secondary);
     transition: box-shadow 250ms, background-color 250ms;
@@ -57,16 +68,14 @@
 
 .rigs .rigscontainer .rig:not(.active) {
     background-color: transparent;
+
+    background-color: var(--gray);
+    color: var(--text-gray);
 }
 
-.rigs .rigscontainer .rig:hover {
-    background-color: var(--primary);
+.rigs .rigscontainer .rig:is(.active):hover {
+    background-color: var(--secondary);
     box-shadow: 0 0 10px var(--primary);
-}
-
-.rigs .rigscontainer .rig:not(.active):hover {
-    background-color: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
 }
 
 .rigs .rigscontainer .rig .name {

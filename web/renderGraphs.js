@@ -14,23 +14,36 @@ if (localStorage.getItem("moneroStorage") !== null) {
 }
 var existingData = {balance: moneroStorage.balance, last_reward: moneroStorage.last_reward, hashrate: [], submittedHashes: moneroStorage.submittedHashes};
 
+// clear Rigs Container
+setInterval(async () => {
+  $(".rigs .rigscontainer").html("");
+}, 5000);
+
 
 // get all values for the graphs from storage
 function values() {
   // Retrieve values from local storage
   // xmrpool.eu
-  const xmrpool_balance = localStorage.getItem("xmrpool_eu.balance");
-  const xmrpool_last_reward = localStorage.getItem("xmrpool_eu.last_reward");
-  const xmrpool_hashrate = localStorage.getItem("xmrpool_eu.hashrate");
-  const xmrpool_total_hashes = localStorage.getItem("xmrpool_eu.total_hashes");
+  let xmrpool_balance = localStorage.getItem("xmrpool_eu.balance");
+  let xmrpool_last_reward = localStorage.getItem("xmrpool_eu.last_reward");
+  let xmrpool_hashrate = localStorage.getItem("xmrpool_eu.hashrate");
+  let xmrpool_total_hashes = localStorage.getItem("xmrpool_eu.total_hashes");
+
+  // nanopool.org
+  let nanopool_balance = localStorage.getItem("nanopool_org.balance");
+  let nanopool_last_reward = localStorage.getItem("nanopool_org.last_reward");
+  let nanopool_hashrate = localStorage.getItem("nanopool_org.hashrate");
+  let nanopool_total_hashes = localStorage.getItem("nanopool_org.total_hashes");
 
   // Create an object to store the values
   const data = {
-    balance: xmrpool_balance,
-    last_reward: xmrpool_last_reward,
-    hashrate: xmrpool_hashrate,
-    total_hashes: xmrpool_total_hashes,
+    balance:      (parseFloat(xmrpool_balance)      + parseFloat(nanopool_balance)).toFixed(17),
+    last_reward:  (parseFloat(xmrpool_last_reward)  + parseFloat(nanopool_last_reward)),
+    hashrate:     (parseFloat(xmrpool_hashrate)     + parseFloat(nanopool_hashrate)),
+    total_hashes: (parseFloat(xmrpool_total_hashes) + parseFloat(nanopool_total_hashes)),
   };
+
+  console.log(data)
 
   // Return the object
   return data;
@@ -194,8 +207,6 @@ function renderGraphs(values, existingData) {
         existingData.hashrate.splice(0, 1);
     }
     existingData.hashrate.push(values.hashrate);
-
-    console.log(existingData);
 
   $(".widget#hashrateWidget #amount").text(formatHashrate(values.hashrate));
 

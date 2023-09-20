@@ -43,7 +43,7 @@
         <p>Active Pools:</p>
 
         <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu" id="active_xmrpool_eu" style="height:25px;width:25px; display: none;">
-
+        <img src="./homePage/res/nanopool_org.png" alt="nanopool.org" id="active_nanopool_org" style="height:25px;width:25px; display: none;">
       </div>
 
       <dashboard>
@@ -75,11 +75,28 @@
       <div class="rigs">
         <p class="title">Your Rig`s</p>
         <div class="headercontainer">
-            <div class="title2"> <p>🔑 Worker / Rig ID</p> <p>⏲ Hashrate</p> <p>☁️ Accepted Hashes</p> <p>🕓 Expired Hashes</p> <p>⚠️Invalid Hashes</p> <p>🕓 Last Share</p> </div>
+          <div class="title2"> 
+            <p class="big">🔑 Worker-RigID</p>
+            <div class="definition">
+              <div class="collumn">  
+                <p class="big">⏲ Hashrate</p>          
+              </div>
+              <div class="collumn">  
+                <p class="big">☁️ Accepted Hashes</p>   
+              </div>
+              <div class="collumn">  
+                <p class="big">🕓 Expired Hashes</p>    
+              </div>
+              <div class="collumn">  
+                <p class="big">⚠️ Invalid Hashes</p>    
+              </div>
+              <div class="collumn">  
+                <p class="big">🕓 Last Share</p>        
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="rigscontainer">
-        </div>
-    </div>
+      <div class="rigscontainer"></div>
     </main>
   </body>
   <!-- shared JS --> 
@@ -89,4 +106,5 @@
   <script type="module" src="./web/renderGraphs.js"></script>
   <!-- JS pools -->
   <script type="module" src="./web/xmrpool_eu.js"></script>
+  <script type="module" src="./web/nanopool_org.js"></script>
 </html>

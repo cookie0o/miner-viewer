@@ -1,54 +1,31 @@
-// Check if address is set
-const StorageXMR_address = localStorage.getItem("moneroXMR_address");
-if (StorageXMR_address === null) {
-  window.open("./settingsPage/settingsPage.html", "_self");
-  console.log("XMR XMR_address check failed: " + JSON.stringify(StorageXMR_address));
-}
-
 // get stored values
 const XMR_address = localStorage.getItem("moneroXMR_address"); // xmr address
 const active_xmrpool_eu = document.getElementById("active_xmrpool_eu"); // xmr pool image
 
-// XMR values
-if (localStorage.getItem("moneroStorage") !== null) {
-  var moneroStorage = JSON.parse(localStorage.getItem("moneroStorage"));
-  console.log(moneroStorage)
-} else {
-  var moneroStorage = {balance: [], last_reward: [], submittedHashes: []};
-  localStorage.setItem("moneroStorage", JSON.stringify(moneroStorage));
-  console.log(moneroStorage)
-}
-
-var existingData = {
-  balance: moneroStorage.balance,
-  last_reward: moneroStorage.last_reward,
-  hashrate: [],
-  submittedHashes: moneroStorage.submittedHashes
-};
-
 // import functions for later use
 import {
+  unformatHashrate, // (hashrate)
   formatLastShareDate, // (lastShareTime)
   trimString_x, // (string, length)
 } from '../shared/js/functions.js';
 
-function unformatHashrate(hashrateStr) {
-  const unitMultipliers = { KH: 1e3, MH: 1e6, GH: 1e9, TH: 1e12, PH: 1e15 };
-  const [value, unit] = hashrateStr.split(' ');
-  if (unit in unitMultipliers) {
-    const hashrate = parseFloat(value) * unitMultipliers[unit];
-    const formattedHashrate = hashrate.toFixed(0);
-    return formattedHashrate;
-  } else {
-    return 'Invalid unit';
-  }
-}
 
 function xmrpool_eu_saving(walletDetails) {
-  var balance = walletDetails.stats.balance ? walletDetails.stats.balance / 1000000000000 : 0;
-  var last_reward = walletDetails.stats.last_reward ? walletDetails.stats.last_reward / 1000000000000 : 0;
-  var hashrate = walletDetails.stats.hashrate !== undefined ? unformatHashrate(walletDetails.stats.hashrate) : 0;
-  var total_hashes = walletDetails.stats.hashes ? walletDetails.stats.hashes : 0;
+  var balance = walletDetails.stats.balance;
+  if (balance == undefined || isNaN(balance)) {balance = 0} else {
+    balance = (walletDetails.stats.balance / 1000000000000);
+  }
+
+  var last_reward = walletDetails.stats.last_reward;
+  if (last_reward == undefined || isNaN(last_reward)) {last_reward = 0}
+
+  var hashrate = walletDetails.stats.hashrate;
+  if (hashrate == undefined) {hashrate = 0} else {
+    hashrate = unformatHashrate(hashrate);
+  }
+
+  var total_hashes = walletDetails.stats.hashes;
+  if (total_hashes == undefined || isNaN(total_hashes)) {total_hashes = 0}
   
   localStorage.setItem("xmrpool_eu.balance", balance);
   localStorage.setItem("xmrpool_eu.last_reward", last_reward);
@@ -83,111 +60,74 @@ setInterval(async () => {
 
 
 function renderRigs(walletDetails) {
-  $(".rigs .rigscontainer").html("");
+  //$(".rigs .rigscontainer").html("");
 
+  // loop through every miner
   for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
-    let active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true;
-    let activeClass = (active) ? "active" : "";
-    let hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
 
-    let invalidHashes, expiredHashes;
+    // sort lists by last share submitted time
+    walletDetails.perWorkerStats.sort((a, b) => b.lastShare - a.lastShare);
+
+    // definitions
+    var workerId       = walletDetails.perWorkerStats[i].workerId
+    var Hashrate       = walletDetails.perWorkerStats[i].hashrate
+    var AllHashes      = walletDetails.perWorkerStats[i].hashes
+    var ExpiredHashes  = walletDetails.perWorkerStats[i].expired
+    var InvalidHashes  = walletDetails.perWorkerStats[i].invalid
+    var lastShareTime  = walletDetails.perWorkerStats[i].lastShare
+
+    // check if miner is active
+    let active = (Hashrate === undefined) ? false : true;
+    let activeClass = (active) ? "active" : "";
+    let HashrateFull = (active) ? Hashrate : "0 H";
+
+    // Display values
+    var invalidHashesFull, expiredHashesFull, workerIdFull, lastShareTimeFull
+
 
     // Calculate Percentage of Invalid Hashes
-    if (walletDetails.perWorkerStats[i].invalid === undefined) {
-        invalidHashes = "0";
+    if (InvalidHashes !== undefined) {
+      const hashes = AllHashes - InvalidHashes;
+      const invalidHashesPercentage = (InvalidHashes / hashes * 100);
+      invalidHashesFull = InvalidHashes + ` (${invalidHashesPercentage.toFixed(2)}%)`;
     } else {
-        invalidHashes = walletDetails.perWorkerStats[i].invalid;
-        const hashes = walletDetails.perWorkerStats[i].hashes - invalidHashes;
-        const invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / hashes * 100);
-        invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
+      invalidHashesFull = "0";
     }
 
     // Calculate Percentage of Expired Hashes
-    if (walletDetails.perWorkerStats[i].expired === undefined) {
-        expiredHashes = "0";
+    if (ExpiredHashes !== undefined) {
+      const hashes = AllHashes - ExpiredHashes;
+      const expiredHashesPercentage = (ExpiredHashes / hashes * 100);
+      expiredHashesFull = ExpiredHashes + ` (${expiredHashesPercentage.toFixed(2)}%)`;
     } else {
-        expiredHashes = walletDetails.perWorkerStats[i].expired;
-        const hashes = walletDetails.perWorkerStats[i].hashes - expiredHashes;
-        const expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / hashes * 100);
-        expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
+      expiredHashesFull = "0";
     }
 
-    if (active) {
-      workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 10);
-      $(".rigs .rigscontainer").append(`
-      <div class="rig ${activeClass}">
-      <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu miner" style="height:20px;width:20px; padding-right: 8px">
-        <p class="name">${workerId}</p>
-        <div class="data">
-          <div class="collumn">
-            <p class="big">${hashrate}/s</p>
-          </div>
-          <div class="collumn" id="hashes">
-            <p class="big">${walletDetails.perWorkerStats[i].hashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${expiredHashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${invalidHashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p>
-          </div>
+    workerIdFull = trimString_x(workerId, 10);
+    lastShareTimeFull = formatLastShareDate(lastShareTime)
+
+    $(".rigs .rigscontainer").append(`
+    <div class="rig ${activeClass}">
+      <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+      <p class="name">${workerIdFull}</p>
+      <div class="data">
+        <div class="collumn">
+          <p class="big">${HashrateFull}/s</p>
+        </div>
+        <div class="collumn" id="hashes">
+          <p class="big">${AllHashes}</p>
+        </div>
+        <div class="collumn">
+          <p class="big">${expiredHashesFull}</p>
+        </div>
+        <div class="collumn">
+          <p class="big">${invalidHashesFull}</p>
+        </div>
+        <div class="collumn">
+          <p class="big">${lastShareTimeFull}</p>
         </div>
       </div>
-    `)};
-  }
-
-  for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
-    let active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true;
-    let activeClass = (active) ? "active" : "";
-    let hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
-
-    let invalidHashes, expiredHashes;
-
-    // Calculate Percentage of Invalid Hashes
-    if (walletDetails.perWorkerStats[i].invalid === undefined) {
-        invalidHashes = "0";
-    } else {
-        invalidHashes = walletDetails.perWorkerStats[i].invalid;
-        const invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / walletDetails.perWorkerStats[i].hashes * 100);
-        invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
-    }
-
-    // Calculate Percentage of Expired Hashes
-    if (walletDetails.perWorkerStats[i].expired === undefined) {
-        expiredHashes = "0";
-    } else {
-        expiredHashes = walletDetails.perWorkerStats[i].expired;
-        const expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / walletDetails.perWorkerStats[i].hashes * 100);
-        expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
-    }
-
-    if (!active) {
-      var workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 10);
-      $(".rigs .rigscontainer").append(`
-      <div class="rig ${activeClass}">
-        <img src="./homePage/res/xmrpool_eu.png" alt="xmrpool.eu miner" style="height:20px;width:20px; padding-right: 8px">
-        <p class="name">${walletDetails.perWorkerStats[i].workerId}</p>
-        <div class="data">
-          <div class="collumn">
-            <p class="big">${hashrate}/s</p>
-          </div>
-          <div class="collumn" id="hashes">
-            <p class="big">${walletDetails.perWorkerStats[i].hashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${expiredHashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${invalidHashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p>
-          </div>
-        </div>
-      </div>
-    `)};
+    </div>
+    `);
   }
 }
