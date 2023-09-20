@@ -24,21 +24,25 @@ setInterval(async () => {
 function values() {
   // Retrieve values from local storage
   // xmrpool.eu
+  var xmrpool_balance, xmrpool_last_reward, xmrpool_hashrate, xmrpool_total_hashes
+  localStorage.getItem("xmrpool_eu.balance");
   try {
-    var xmrpool_balance = localStorage.getItem("xmrpool_eu.balance");
-    var xmrpool_last_reward = localStorage.getItem("xmrpool_eu.last_reward");
-    var xmrpool_hashrate = localStorage.getItem("xmrpool_eu.hashrate");
-    var xmrpool_total_hashes = localStorage.getItem("xmrpool_eu.total_hashes");
+    xmrpool_balance = localStorage.getItem("xmrpool_eu.balance");
+    xmrpool_last_reward = localStorage.getItem("xmrpool_eu.last_reward");
+    xmrpool_hashrate = localStorage.getItem("xmrpool_eu.hashrate");
+    xmrpool_total_hashes = localStorage.getItem("xmrpool_eu.total_hashes");
   } catch { 
     xmrpool_balance, xmrpool_last_reward, xmrpool_hashrate, xmrpool_total_hashes = 0
   }
 
   // nanopool.org
+  var nanopool_balance, nanopool_last_reward, nanopool_hashrate, nanopool_total_hashes
+  nanopool_balance = localStorage.getItem("nanopool_org.balance");
   try {
-    var nanopool_balance = localStorage.getItem("nanopool_org.balance");
-    var nanopool_last_reward = localStorage.getItem("nanopool_org.last_reward");
-    var nanopool_hashrate = localStorage.getItem("nanopool_org.hashrate");
-    var nanopool_total_hashes = localStorage.getItem("nanopool_org.total_hashes");
+    nanopool_balance = localStorage.getItem("nanopool_org.balance");
+    nanopool_last_reward = localStorage.getItem("nanopool_org.last_reward");
+    nanopool_hashrate = localStorage.getItem("nanopool_org.hashrate");
+    nanopool_total_hashes = localStorage.getItem("nanopool_org.total_hashes");
   } catch { 
     nanopool_balance, nanopool_last_reward, nanopool_hashrate, nanopool_total_hashes = 0
   }
