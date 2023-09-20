@@ -3,7 +3,7 @@
   "name": "Miner viewer",
   "icons": [
     {
-      "src": "https://github.com/cookie0o/miner-viewer/blob/master/shared/res/logo.png",
+      "src": "https://github.com/cookie0o/miner-viewer/blob/master/shared/res/logo.png?raw=true",
       "type": "image/png",
       "sizes": "640x640"
     }
