@@ -7,7 +7,7 @@ View at: [https://cookie0o.github.io/miner-viewer](https://cookie0o.github.io/mi
 Complete Recode for better performance, looks and scalability.
 
 #### Supported Pools
-[xmrpool.eu](https://web.xmrpool.eu)
+[xmrpool](https://web.xmrpool.eu), [nanopool](https://xmr.nanopool.org) (beta/partial supp.!)
 (more in the future!)
 
 ## Contributors
