@@ -7,6 +7,7 @@ import {
   unformatHashrate, // (hashrate)
   formatLastShareDate, // (lastShareTime)
   trimString_x, // (string, length)
+  removePercentage, // (number + %)
 } from '../shared/js/functions.js';
 
 
@@ -41,7 +42,7 @@ function xmrpool_eu_saving(walletDetails) {
   }
 }
 
-async function init() {
+async function init_xmrpool_eu() {
   var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
   Chart.defaults.color = "#ffffff00"
   Chart.defaults.borderColor = '#85dc7e';
@@ -50,7 +51,7 @@ async function init() {
   xmrpool_eu_saving(walletDetails)
   renderRigs(walletDetails);
 }
-init();
+init_xmrpool_eu();
 
 setInterval(async () => {
   var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
@@ -65,8 +66,27 @@ function renderRigs(walletDetails) {
   // loop through every miner
   for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
 
-    // sort lists by last share submitted time
-    walletDetails.perWorkerStats.sort((a, b) => b.lastShare - a.lastShare);
+    // sort list by selected order
+    let SortingOrder = localStorage.getItem("sortingOrder");
+    if (SortingOrder == 1) { // Hashrate
+      walletDetails.perWorkerStats.sort((a, b) => unformatHashrate(b.hashrate) - unformatHashrate(a.hashrate))
+    };
+    if (SortingOrder == 2) { // Accepted Hashes
+      walletDetails.perWorkerStats.sort((a, b) => b.hashes - a.hashes)
+    };
+    if (SortingOrder == 3) { // Expired Hashes
+      walletDetails.perWorkerStats.sort((a, b) => removePercentage(b.expired) - removePercentage(a.expired))
+    };
+    if (SortingOrder == 4) { // Invalid Hashes
+      walletDetails.perWorkerStats.sort((a, b) => removePercentage(b.invalid) - removePercentage(a.invalid))
+    };
+    if (SortingOrder == 5) { // Last Share Time
+      walletDetails.perWorkerStats.sort((a, b) => b.lastShare - a.lastShare)
+    };
+    if (SortingOrder == 6 || SortingOrder == null) { // sort by active/offline default
+      walletDetails.perWorkerStats.sort((a, b) => 0 - unformatHashrate(a.hashrate))
+    };
+
 
     // definitions
     var workerId       = walletDetails.perWorkerStats[i].workerId
@@ -111,19 +131,19 @@ function renderRigs(walletDetails) {
       <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
       <p class="name">${workerIdFull}</p>
       <div class="data">
-        <div class="collumn">
+        <div class="column">
           <p class="big">${HashrateFull}/s</p>
         </div>
-        <div class="collumn" id="hashes">
+        <div class="column" id="hashes">
           <p class="big">${AllHashes}</p>
         </div>
-        <div class="collumn">
+        <div class="column">
           <p class="big">${expiredHashesFull}</p>
         </div>
-        <div class="collumn">
+        <div class="column">
           <p class="big">${invalidHashesFull}</p>
         </div>
-        <div class="collumn">
+        <div class="column">
           <p class="big">${lastShareTimeFull}</p>
         </div>
       </div>

@@ -22,6 +22,7 @@ if (localStorage.getItem("moneroStorage") !== null) {
 import {
   formatLastShareDate, // (lastShareTime)
   trimString_x, // (string, length)
+  removePercentage, // (number + %)
 } from '../shared/js/functions.js';
 
 function unformatHashrate(hashrateStr) {
@@ -43,7 +44,7 @@ function unformatHashrate(hashrateStr) {
 function nanopool_org_saving(walletDetails) {
   var balance = walletDetails.data.balance;
   if (isNaN(balance)) {balance = 0} else {
-    balance = (walletDetails.data.balance / 1000000000000);
+    balance = (walletDetails.data.balance);
   }
 
   var last_reward = 0
@@ -73,7 +74,7 @@ function nanopool_org_saving(walletDetails) {
 // if false dont send requests
 var requ = true
 
-async function init() {
+async function init_nanopool_org() {
   try {
     var accExist = await $.get(`https://api.nanopool.org/v1/xmr/accountexist/${XMR_address}`);
   } catch(e) {console.log("error [nanopool.org]\n"+e.message)}
@@ -92,7 +93,7 @@ async function init() {
   nanopool_org_saving(walletDetails)
   renderRigs(walletDetails, minerDetails);
 }
-init();
+init_nanopool_org();
 
 setInterval(async () => {
   try {
@@ -112,8 +113,27 @@ function renderRigs(walletDetails, minerDetails) {
   // loop through every miner
   for (let i = 0; i < minerDetails.data.length; i++) {
 
-    // sort lists by last share submitted time
-    minerDetails.data.sort((a, b) => b.lastShare - a.lastShare);
+    // sort list by selected order
+    var SortingOrder = localStorage.getItem("sortingOrder");
+    if (SortingOrder == 1) { // Hashrate
+      minerDetails.data.sort((a, b) => b.hashrate - a.hashrate)
+    };
+    if (SortingOrder == 2) { // Accepted Hashes
+      // not supported right now
+    };
+    if (SortingOrder == 3) { // Expired Hashes
+      // not supported right now
+    };
+    if (SortingOrder == 4) { // Invalid Hashes
+      // not supported right now
+    };
+    if (SortingOrder == 5) { // Last Share Time
+      minerDetails.data.sort((a, b) => b.lastShare - a.lastShare)
+    };
+    if (SortingOrder == null) { // Don´t sort
+      // don´t sort since nothing is selected
+    };
+
 
     // definitions
     var workerId       = minerDetails.data[i].id
@@ -158,19 +178,19 @@ function renderRigs(walletDetails, minerDetails) {
       <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
       <p class="name">${workerIdFull}</p>
       <div class="data">
-        <div class="collumn">
+        <div class="column">
           <p class="big">${HashrateFull}/s</p>
         </div>
-        <div class="collumn" id="hashes">
+        <div class="column" id="hashes">
           <p class="big">${AllHashes}</p>
         </div>
-        <div class="collumn">
+        <div class="column">
           <p class="big">${expiredHashesFull}</p>
         </div>
-        <div class="collumn">
+        <div class="column">
           <p class="big">${invalidHashesFull}</p>
         </div>
-        <div class="collumn">
+        <div class="column">
           <p class="big">${lastShareTimeFull}</p>
         </div>
       </div>
