@@ -14,9 +14,23 @@ if (localStorage.getItem("moneroStorage") !== null) {
 }
 var existingData = {balance: moneroStorage.balance, last_reward: moneroStorage.last_reward, hashrate: [], submittedHashes: moneroStorage.submittedHashes};
 
-// clear Rigs Container
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// clear Rigs Container and reset scrollbar position
 setInterval(async () => {
-  $(".rigs .rigscontainer").html("");
+  var x = true
+  // Get the current scrollbar position
+  let oldPos = window.scrollY;
+
+  // Clear the rigs container
+  $(".rigscontainer").empty();
+
+  // Restore the scrollbar position after delay
+  sleep(100).then(() => { 
+    window.scrollTo(0, oldPos);
+   });
 }, 5000);
 
 
