@@ -161,7 +161,8 @@ function get_return_rate(currentBalanceXMR) {
 
 // remove symbols and just leave the raw hashrate value
 function unformatHashrate(hashrateStr) {
-  const unitMultipliers = { KH: 1e3, MH: 1e6, GH: 1e9, TH: 1e12, PH: 1e15 };
+  if (hashrateStr == undefined) {return 0}
+  const unitMultipliers = { H: 1, KH: 1e3, MH: 1e6, GH: 1e9, TH: 1e12, PH: 1e15 };
   const [value, unit] = hashrateStr.split(' ');
   if (unit in unitMultipliers) {
     const hashrate = parseFloat(value) * unitMultipliers[unit];
@@ -170,6 +171,13 @@ function unformatHashrate(hashrateStr) {
   } else {
     return 'Invalid unit';
   }
+}
+
+// remove % and just leave the raw number
+function removePercentage(combined) {
+  if (combined == undefined) {return 0}
+  const [value, percentage] = combined.split(' ');
+  return value
 }
     
 // export functions
@@ -180,5 +188,6 @@ export {
   formatHashrate,
   unformatHashrate,
   trimString_x,
-  get_return_rate
+  get_return_rate,
+  removePercentage
 };
