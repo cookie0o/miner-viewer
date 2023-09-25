@@ -18,7 +18,9 @@ function xmrpool_eu_saving(walletDetails) {
   }
 
   var last_reward = walletDetails.stats.last_reward;
-  if (last_reward == undefined || isNaN(last_reward)) {last_reward = 0}
+  if (last_reward == undefined || isNaN(last_reward)) {last_reward = 0} else {
+    last_reward = (walletDetails.stats.last_reward / 1000000000000);
+  }
 
   var hashrate = walletDetails.stats.hashrate;
   if (hashrate == undefined) {hashrate = 0} else {
@@ -61,8 +63,6 @@ setInterval(async () => {
 
 
 function renderRigs(walletDetails) {
-  //$(".rigs .rigscontainer").html("");
-
   // loop through every miner
   for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
 

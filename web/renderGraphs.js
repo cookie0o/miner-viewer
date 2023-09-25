@@ -70,7 +70,7 @@ function values() {
   // Create an object to store the values
   const data = {
     balance:      (parseFloat(xmrpool_balance)      + parseFloat(nanopool_balance)).toFixed(12),
-    last_reward:  (parseFloat(xmrpool_last_reward)  + parseFloat(nanopool_last_reward)),
+    last_reward:  (parseFloat(xmrpool_last_reward)  + parseFloat(nanopool_last_reward)).toFixed(12),
     hashrate:     (parseFloat(xmrpool_hashrate)     + parseFloat(nanopool_hashrate)),
     total_hashes: (parseFloat(xmrpool_total_hashes) + parseFloat(nanopool_total_hashes)),
   };
