@@ -38,41 +38,54 @@ function trimString_x(string, length) {
   }
 }
 
-function formatLastShareDate(lastShareTime) {
-  // Given date in Unix timestamp format (seconds)
-  const LastShareDateMilliseconds = lastShareTime * 1000;
+function format_UNIX_time(Time, mode) {
+  if (mode == "ago") {
+    // Given date in Unix timestamp format (seconds)
+    const LastShareDateMilliseconds = Time * 1000;
 
-  // Get the current date and time
-  const currentDate = new Date();
+    // Get the current date and time
+    const currentDate = new Date();
 
-  // Convert the given date to a Date object
-  const LastShareDate = new Date(LastShareDateMilliseconds);
+    // Convert the given date to a Date object
+    const LastShareDate = new Date(LastShareDateMilliseconds);
 
-  // Calculate the time difference in milliseconds
-  const timeDifferenceInMilliseconds = currentDate - LastShareDate;
+    // Calculate the time difference in milliseconds
+    const timeDifferenceInMilliseconds = currentDate - LastShareDate;
 
-  // Convert the time difference to days, hours, minutes, seconds and milliseconds
-  const daysDifference = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60 * 24));
-  const hoursDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutesDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-  const secondsDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60)) / 1000);
-  const millisecondsDifference = timeDifferenceInMilliseconds % 1000;
+    // Convert the time difference to days, hours, minutes, seconds and milliseconds
+    const daysDifference = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60 * 24));
+    const hoursDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutesDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60)) / 1000);
+    const millisecondsDifference = timeDifferenceInMilliseconds % 1000;
 
-  let lastShare;
+    let lastShare;
 
-  if (daysDifference > 0) {
-      lastShare = daysDifference + " day" + (daysDifference === 1 ? "" : "s") + " ago";
-  } else if (hoursDifference > 0) {
-      lastShare = hoursDifference + " hour" + (hoursDifference === 1 ? "" : "s") + " ago";
-  } else if (minutesDifference > 0) {
-      lastShare = minutesDifference + " minute" + (minutesDifference === 1 ? "" : "s") + " ago";
-  } else if (secondsDifference > 0) {
-      lastShare = secondsDifference + " second" + (secondsDifference === 1 ? "" : "s") + " ago";
-  } else {
-      lastShare = millisecondsDifference + " millisecond" + (millisecondsDifference === 1 ? "" : "s") + " ago";
+    if (daysDifference > 0) {
+        lastShare = daysDifference + " day" + (daysDifference === 1 ? "" : "s") + " ago";
+    } else if (hoursDifference > 0) {
+        lastShare = hoursDifference + " hour" + (hoursDifference === 1 ? "" : "s") + " ago";
+    } else if (minutesDifference > 0) {
+        lastShare = minutesDifference + " minute" + (minutesDifference === 1 ? "" : "s") + " ago";
+    } else if (secondsDifference > 0) {
+        lastShare = secondsDifference + " second" + (secondsDifference === 1 ? "" : "s") + " ago";
+    } else {
+        lastShare = millisecondsDifference + " millisecond" + (millisecondsDifference === 1 ? "" : "s") + " ago";
+    }
+
+    return lastShare.replace("-", "");
   }
+  if (mode == "accurate") {
+    // Create a Date object by converting the Time to milliseconds
+    var date = new Date(Time * 1000);
 
-  return lastShare.replace("-", "");
+    // Format the date as a readable string
+    var formattedDate =
+      `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}, ` +
+      `${date.getHours()}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`;
+
+    return formattedDate
+  }
 }
 
 // get current xmr return rate
@@ -182,7 +195,7 @@ function removePercentage(combined) {
     
 // export functions
 export {
-  formatLastShareDate,
+  format_UNIX_time,
   SelectedCurrency,
   getCurrencySymbol,
   formatHashrate,

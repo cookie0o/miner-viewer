@@ -8,5 +8,9 @@
 
 ::-webkit-scrollbar-thumb {
     border-radius: 8px;
-    background-color: var(--secondary);
+    background-color: var(--primary);
+}
+
+::-webkit-scrollbar-corner {
+    background-color: var(--background);
 }
