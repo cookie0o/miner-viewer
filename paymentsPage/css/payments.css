@@ -1,0 +1,73 @@
+.payments .headercontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payments .headercontainer .title2 {
+  display: flex;
+  align-items: center;
+
+  padding: 0;
+}
+
+.payments .headercontainer .title2 .definition {
+  flex: 1 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.payments .headercontainer .title2 .column {white-space: nowrap;}
+.payments .headercontainer .title2 .big {font-size: 16px;}
+
+.payments .headercontainer .title2 .column.paymentht {
+  text-align: end;
+}
+
+
+
+
+.payments .paymentscontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payments .paymentscontainer .payment {
+  flex: 1 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  
+  padding: 0px 2cqb;
+  border-radius: 20px;
+  
+  background-color: var(--secondary);
+  transition: box-shadow 250ms, background-color 250ms;
+}
+
+.payments .paymentscontainer .payment:hover {
+  background-color: var(--secondary);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.payments .paymentscontainer .payment .data {
+  flex: 1 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.payments .paymentscontainer .payment .data img {
+  width: 25px;
+  height: 25px;
+  padding-left: 10px;
+}
+
+.payments .paymentscontainer .payment .data .column {width: 100px; white-space: nowrap;}
+ .payments .paymentscontainer  .payment .big {font-size: 16px;}
+
+.payments .paymentscontainer  .payment .column.end {
+  text-align: end;
+}

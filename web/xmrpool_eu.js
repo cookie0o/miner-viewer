@@ -5,7 +5,7 @@ const active_xmrpool_eu = document.getElementById("active_xmrpool_eu"); // xmr p
 // import functions for later use
 import {
   unformatHashrate, // (hashrate)
-  formatLastShareDate, // (lastShareTime)
+  format_UNIX_time, // (lastShareTime)
   trimString_x, // (string, length)
   removePercentage, // (number + %)
 } from '../shared/js/functions.js';
@@ -44,21 +44,40 @@ function xmrpool_eu_saving(walletDetails) {
   }
 }
 
+var requ_xmrpool_eu = true
+
 async function init_xmrpool_eu() {
-  var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
+  try {
+    var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
+  } catch(e) {console.log("error [xmrpool.eu]\n"+e.message)}
+  if (walletDetails.error != "Wallet address was not found.") {
+    xmrpool_eu_saving(walletDetails)
+    renderRigs(walletDetails);
+  } else {
+    console.log("no account found: you have to mine 1 share to be visible! [xmrpool.eu]\n(reload site or change address in settings to try again!)");
+    requ_xmrpool_eu = false;
+    return 0
+  }
   Chart.defaults.color = "#ffffff00"
   Chart.defaults.borderColor = '#85dc7e';
   Chart.defaults.backgroundColor = "#ffffff";
   Chart.defaults.elements.line.fill = "origin";
-  xmrpool_eu_saving(walletDetails)
-  renderRigs(walletDetails);
 }
 init_xmrpool_eu();
 
 setInterval(async () => {
-  var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
-  xmrpool_eu_saving(walletDetails)
-  renderRigs(walletDetails);
+  if (requ_xmrpool_eu == false) {return 0}
+  try {
+    var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
+  } catch(e) {console.log("error [xmrpool.eu]\n"+e.message)}
+  if (walletDetails.error != "Wallet address was not found.") {
+    xmrpool_eu_saving(walletDetails)
+    renderRigs(walletDetails);
+  } else {
+    console.log("no account found: you have to mine 1 share to be visible! [xmrpool.eu]\n(reload site or change address in settings to try again!)");
+    requ_xmrpool_eu = false;
+    return 0
+  }
 }, 5000);
 
 
@@ -124,11 +143,11 @@ function renderRigs(walletDetails) {
     }
 
     workerIdFull = trimString_x(workerId, 10);
-    lastShareTimeFull = formatLastShareDate(lastShareTime)
+    lastShareTimeFull = format_UNIX_time(lastShareTime, "ago")
 
     $(".rigs .rigscontainer").append(`
     <div class="rig ${activeClass}">
-      <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+      <img src="../shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
       <p class="name">${workerIdFull}</p>
       <div class="data">
         <div class="column">

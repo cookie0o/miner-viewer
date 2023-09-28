@@ -1,0 +1,131 @@
+
+
+.rigs .headercontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rigs .headercontainer .title2 {
+    display: flex;
+    align-items: center;
+
+    padding: 0px 2cqb;
+}
+
+.rigs .headercontainer .title2 .name {
+    width: 110px;
+}
+
+.rigs .headercontainer .title2 .definition {
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.rigs .headercontainer .title2 .column {width: 100px; white-space: nowrap;}
+.rigs .headercontainer .title2 .big {font-size: 16px;}
+
+.rigs .headercontainer .title2 .column.right {
+    text-align: end;
+}
+
+
+
+
+
+
+
+
+.rigs {
+    min-width: 1065px;
+}
+
+.rigs .header {
+  display: flex;
+  align-items: center;
+  }
+  .rigs .header .title {
+    font-size: 20px;
+  }
+  .rigs .header .comboBox_def {
+    font-size: 20px;
+
+    margin-left: auto;
+  }
+  .rigs .header .comboBox {
+    color: var(--text);
+    font-size: 17px;
+  
+    background-color: var(--secondary);
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    outline: none;
+  
+    width: max-content; min-width: unset;
+    flex: 1 0 0;
+    max-width: 200px;
+    margin-left: 10px;
+}
+
+
+
+
+
+.rigs .rigscontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  margin-top: 10px;
+}
+
+.rigs .rigscontainer .rig {
+  display: flex;
+  align-items: center;
+
+  padding: 0px 2cqb;
+  border-radius: 20px;
+ 
+
+  background-color: var(--secondary);
+  transition: box-shadow 250ms, background-color 250ms;
+}
+
+.rigs .rigscontainer .rig:not(.active) {
+  background-color: transparent;
+
+  background-color: var(--gray);
+  color: var(--text-gray);
+}
+
+.rigs .rigscontainer .rig:is(.active):hover {
+  background-color: var(--secondary);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.rigs .rigscontainer .rig .name {
+  font-size: 18px;
+  width: 100px;
+}
+
+.rigs .rigscontainer .rig .data {
+  flex: 1 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.rigs .rigscontainer .rig .data .image {
+  width: 25px;
+  height: 25px;
+}
+
+.rigs .rigscontainer .rig .data .column {width: 100px; white-space: nowrap;}
+.rigs .rigscontainer .rig .big {font-size: 16px;}
+
+.rigs .rigscontainer .rig .column.right {
+  text-align: end;
+}

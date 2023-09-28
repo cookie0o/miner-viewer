@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="manifest" href="../manifest.json" />
+
+    <meta name="theme-color" content="#24898f"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <meta name="description" content="Site to view pool miners">
+    
+    <link rel="icon" type="image/x-icon" href="../shared/res/favicon.png">
+    <title>miner-viewer (Payments)</title>
+
+    <!-- shared CSS -->
+    <link rel="stylesheet" href="../shared/css/color-variables.css">
+    <link rel="stylesheet" href="../shared/css/sidebar.css">
+    <link rel="stylesheet" href="../shared/css/style.css">
+    <link rel="stylesheet" href="../shared/css/scrollbar.css">
+    <!-- CSS -->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css' defer>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/payments.css">
+  </head>
+
+  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js"></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+
+  <!-- sidebar -->
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <a href="../index.html"><navitem><i class="fi fi-rr-home"></i>Home</navitem></a>
+      <navitem class="active"><i class="fi fi-rr-donate"></i>Payments</navitem>
+      <a href="../settingsPage/settingsPage.html"><navitem><i class="fi fi-rr-settings"></i>Settings</navitem></a>
+    </nav>
+  </div>
+  <!-- main site content -->
+  <body>
+    <div class="sidebar_btn"> 
+      <button id="sidebar_btn"><i class="fi fi-rr-menu-burger" title="burger-menu"></i>
+    </div>  
+    <main id="main">
+      <div class="payments">
+        <div class="header">
+          <!-- header title -->
+          <p class="title">Your pool Payments</p>
+          <p class="total_paid_def">Total Paid:</p>
+          <p class="total_paid" id="total_paid"></p>
+        </div>
+        <!-- header -->
+        <div class="headercontainer">
+          <div class="title2"> 
+            <div class="definition">
+              <div class="column">  
+                <p class="big" style="padding-right: 55px;">🪙 Pool</p>          
+              </div>
+              <div class="column">  
+                <p class="big" style="padding-right: 60px;">🕓 Time Sent</p>          
+              </div>
+
+              <div class="colum" style="width: 550px; padding-right: 20px;">  
+                <p class="big">#️⃣ Transaction Hash</p>
+              </div>
+
+              <div class="column">  
+                <p class="big" style="padding-right: 25px;">💰 Amount</p>   
+              </div>
+              <div class="column">  
+                <p class="big" style="padding-right: 20px;">💻 Mixin</p>    
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="paymentscontainer"></div>
+    </main>
+  </body>
+  <!-- shared JS -->
+  <script src="../shared/js/sidebar.js"></script>
+  <script type="module" src="../web/payments.js"></script>
+  <!-- JS -->
+  <script src="./js/script.js"></script>
+</html>

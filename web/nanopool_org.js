@@ -20,7 +20,7 @@ if (localStorage.getItem("moneroStorage") !== null) {
 
 // import functions for later use
 import {
-  formatLastShareDate, // (lastShareTime)
+  format_UNIX_time, // (lastShareTime)
   trimString_x, // (string, length)
   removePercentage, // (number + %)
 } from '../shared/js/functions.js';
@@ -57,7 +57,7 @@ function nanopool_org_saving(walletDetails) {
 
   var total_hashes = 0
   if (isNaN(total_hashes)) {total_hashes = 0}
-  
+
   localStorage.setItem("nanopool_org.balance", balance);
   localStorage.setItem("nanopool_org.last_reward", last_reward);
   localStorage.setItem("nanopool_org.hashrate", hashrate);
@@ -171,11 +171,11 @@ function renderRigs(walletDetails, minerDetails) {
     }
 
     workerIdFull = trimString_x(workerId, 10);
-    lastShareTimeFull = formatLastShareDate(lastShareTime)
+    lastShareTimeFull = format_UNIX_time(lastShareTime, "ago")
 
     $(".rigs .rigscontainer").append(`
     <div class="rig ${activeClass}">
-      <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+      <img src="../shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
       <p class="name">${workerIdFull}</p>
       <div class="data">
         <div class="column">

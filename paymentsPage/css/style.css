@@ -1,0 +1,16 @@
+
+.payments {
+  min-width: 1065px;
+}
+
+.payments .header {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  }
+  .payments .header .total_paid_def {
+    margin-left: auto;
+  }
+  .payments .header .total_paid {
+    margin-left: 5px;
+  }
