@@ -164,7 +164,7 @@ function renderRigs(walletDetails, minerDetails) {
 
     $(".rigs .rigscontainer").append(`
     <div class="rig ${activeClass}">
-      <img src="../shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+      <img src="./shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
       <p class="name">${workerIdFull}</p>
       <div class="data">
         <div class="column">
