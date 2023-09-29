@@ -47,25 +47,6 @@ function xmrpool_eu_saving(walletDetails) {
 var requ_xmrpool_eu = true
 
 async function init_xmrpool_eu() {
-  try {
-    var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
-  } catch(e) {console.log("error [xmrpool.eu]\n"+e.message)}
-  if (walletDetails.error != "Wallet address was not found.") {
-    xmrpool_eu_saving(walletDetails)
-    renderRigs(walletDetails);
-  } else {
-    console.log("no account found: you have to mine 1 share to be visible! [xmrpool.eu]\n(reload site or change address in settings to try again!)");
-    requ_xmrpool_eu = false;
-    return 0
-  }
-  Chart.defaults.color = "#ffffff00"
-  Chart.defaults.borderColor = '#85dc7e';
-  Chart.defaults.backgroundColor = "#ffffff";
-  Chart.defaults.elements.line.fill = "origin";
-}
-init_xmrpool_eu();
-
-setInterval(async () => {
   if (requ_xmrpool_eu == false) {return 0}
   try {
     var walletDetails = await $.get(`https://web.xmrpool.eu:8119/stats_address?address=${XMR_address}&longpoll=false`);
@@ -78,7 +59,9 @@ setInterval(async () => {
     requ_xmrpool_eu = false;
     return 0
   }
-}, 5000);
+}
+// export function to run miner render
+export {init_xmrpool_eu}
 
 
 function renderRigs(walletDetails) {
@@ -147,7 +130,7 @@ function renderRigs(walletDetails) {
 
     $(".rigs .rigscontainer").append(`
     <div class="rig ${activeClass}">
-      <img src="./shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+      <img src="../shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
       <p class="name">${workerIdFull}</p>
       <div class="data">
         <div class="column">

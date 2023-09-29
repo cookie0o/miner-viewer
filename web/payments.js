@@ -21,7 +21,7 @@ function sleep(ms) {
 }
 
 // clear Payments Container and reset scrollbar position
-setInterval(async () => {
+function reset() {
   var x = true
   // Get the current scrollbar position
   let oldPos = window.scrollY;
@@ -33,7 +33,7 @@ setInterval(async () => {
   sleep(100).then(() => { 
     window.scrollTo(0, oldPos);
    });
-}, 5000);
+}
 
 var requ_nanopool_org = true
 var requ_xmrpool_eu = true
@@ -98,6 +98,9 @@ payments_xmrpool_eu()
 payments_nanopool_org()
 total_paid()
 setInterval(() => {
+  // clear payments list for new render
+  reset()
+  // render
   payments_xmrpool_eu()
   payments_nanopool_org()
   total_paid()

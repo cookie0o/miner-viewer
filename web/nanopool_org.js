@@ -72,39 +72,28 @@ function nanopool_org_saving(walletDetails) {
 }
 
 // if false dont send requests
-var requ = true
+var requ_nanopool_org = true
 
 async function init_nanopool_org() {
+  if (requ_nanopool_org == false) {return 0}
   try {
     var accExist = await $.get(`https://api.nanopool.org/v1/xmr/accountexist/${XMR_address}`);
-  } catch(e) {console.log("error [nanopool.org]\n"+e.message)}
-
+  } catch(e) {console.log("error [nanopool.org]\n"+e.message);requ_nanopool_org=false}
   if (accExist.status != false) {
     try {
       var walletDetails = await $.get(`https://api.nanopool.org/v1/xmr/user/${XMR_address}`);
       var minerDetails = await $.get(`https://api.nanopool.org/v1/xmr/workers/${XMR_address}`);
     } catch(e) {console.log("error [nanopool.org]\n"+e.message)}
-  } else {console.log("no account found: you have to mine 1 share to be visible! [nanopool.org]\n(reload site or change address in settings to try again!)");requ = false;return 0}
-
-  Chart.defaults.color = "#ffffff00"
-  Chart.defaults.borderColor = '#85dc7e';
-  Chart.defaults.backgroundColor = "#ffffff";
-  Chart.defaults.elements.line.fill = "origin";
+  } else {
+    console.log("no account found: you have to mine 1 share to be visible! [nanopool.org]\n(reload site or change address in settings to try again!)");
+    requ_nanopool_org=false
+    return 0
+  }
   nanopool_org_saving(walletDetails)
   renderRigs(walletDetails, minerDetails);
 }
-init_nanopool_org();
-
-setInterval(async () => {
-  try {
-    if (requ != false) {
-      var walletDetails = await $.get(`https://api.nanopool.org/v1/xmr/user/${XMR_address}`);
-      var minerDetails = await $.get(`https://api.nanopool.org/v1/xmr/workers/${XMR_address}`);
-    } else {return 0}
-  } catch(e) {return 0}
-  nanopool_org_saving(walletDetails)
-  renderRigs(walletDetails, minerDetails);
-}, 5000);
+// export function to run miner render
+export {init_nanopool_org}
 
 
 function renderRigs(walletDetails, minerDetails) {
@@ -175,7 +164,7 @@ function renderRigs(walletDetails, minerDetails) {
 
     $(".rigs .rigscontainer").append(`
     <div class="rig ${activeClass}">
-      <img src="./shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+      <img src="../shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
       <p class="name">${workerIdFull}</p>
       <div class="data">
         <div class="column">
