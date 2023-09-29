@@ -7,7 +7,6 @@ Complete Recode for better performance, looks, and scalability.
   <img src="https://github.com/cookie0o/miner-viewer/assets/81589649/d7007190-edd5-4943-a295-b4fae183d498" style="height: 213px;"> 
   <img src="https://github.com/cookie0o/miner-viewer/assets/81589649/d189f6a8-8431-42bb-9e61-a71d9ff1fbb7" style="height: 213px;"> 
 </div>    
-(also in light mode!)
 
 #### Supported Pools
 [xmrpool](https://web.xmrpool.eu), [nanopool](https://xmr.nanopool.org) (beta/partial supp.!)  
