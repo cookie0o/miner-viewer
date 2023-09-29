@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="manifest" href="../manifest.json" />
+
+    <meta name="theme-color" content="#24898f"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <meta name="description" content="Site to view pool miners">
+    
+    <link rel="icon" type="image/x-icon" href="../shared/res/favicon.png">
+    <title>miner-viewer (Settings)</title>
+
+    <!-- shared CSS -->
+    <link rel="stylesheet" href="../shared/css/color-variables.css">
+    <link rel="stylesheet" href="../shared/css/sidebar.css">
+    <link rel="stylesheet" href="../shared/css/style.css">
+    <link rel="stylesheet" href="../shared/css/scrollbar.css">
+    <!-- CSS -->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css' defer>
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+  <script type="module" src="../shared/js/lists.js"></script>
+  <!-- sidebar -->
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <a href="../index.html"><navitem><i class="fi fi-rr-home"></i>Home</navitem></a>
+      <a href="../paymentsPage/paymentsPage.html"><navitem><i class="fi fi-rr-donate"></i>Payments</navitem></a>
+      <navitem class="active"><i class="fi fi-rr-settings"></i>Settings</navitem>
+    </nav>
+  </div>
+  <!-- main site content -->
+  <body>
+    <div class="sidebar_btn"> 
+      <button id="sidebar_btn"><i class="fi fi-rr-menu-burger" title="burger-menu"></i>
+    </div>  
+    <main id="main">
+      <div class="settings">
+        <div class="setting"><p>XMR address:</p><input type="text" class="full" id="xmraddress" placeholder="Address"></div>
+        <div class="setting"><p>Currency:</p><select id="currencySelect" title="currency-select"></select></div>
+      
+        <div class="setting"><p>Donate:</p><button id="donate_btn">here :)</button>
+      </div>
+
+      <script type="module">
+        // populate the ComboBox on page load
+        import {
+          currencyCodes
+        } from '../shared/js/lists.js';
+
+        const currencySelect = document.getElementById("currencySelect");
+        function populateComboBox() {
+          for (const code of currencyCodes) {
+            const option = document.createElement("option");
+            option.text = code;
+            option.value = code;
+            currencySelect.appendChild(option);
+          }
+          // if no currency is set refer to default: EUR
+          if (localStorage.getItem("currency") == null) {
+            localStorage.setItem("currency", "Euro (EUR)");
+          }
+        }
+        // run function
+        populateComboBox();
+      </script>
+    </main>
+  </body>
+  <!-- shared JS -->
+  <script src="../shared/js/sidebar.js"></script>
+  <!-- JS -->
+  <script src="./js/script.js"></script>
+</html>
