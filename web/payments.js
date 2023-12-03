@@ -57,7 +57,6 @@ async function payments_xmrpool_eu () {
 
 async function payments_nanopool_org () {
   if (requ_nanopool_org == false) {return 0}
-  alert("nanopool.org payments are currently not displayed. If you know an active nanopool.org XMR address, please send it to my email (it will not be made public!).\n\n\ncookie0o@protonmail.com")
 
   try {
     var accExist = await $.get(`https://api.nanopool.org/v1/xmr/accountexist/${XMR_address}`);
