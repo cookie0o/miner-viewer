@@ -1,5 +1,5 @@
 # A Page for simultaneously viewing your miners, payments, and more from different pools.
-View at: [https://sch-raphael.github.io/miner-viewer](https://sch-raphael.github.io/miner-viewer)
+View at: [https://cookie0o.github.io/miner-viewer](https://cookie0o.github.io/miner-viewer)
 
 ## v2
 Complete Recode for better performance, looks, and scalability.
