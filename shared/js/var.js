@@ -1,5 +1,4 @@
-// export var StorageKey = localStorage.getItem("monerokey");
-export var StorageKey_unchecked = ("888tNkZrPN6JsEgekjMnABU4TBzc2Dt29EPAvkRxbANsAnjyPbb3iQ1YBRk1UXcdRsiKc9dhwMVgN5S9cQUiyoogDavup3H")
+export var StorageKey = localStorage.getItem("monerokey");
 if (StorageKey_unchecked.match(/4[0-9AB][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{93}/) == true) {
     var StorageKey = StorageKey_unchecked;
 } else {
