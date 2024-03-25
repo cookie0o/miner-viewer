@@ -88,40 +88,41 @@ setInterval(async () => {
 
 
 function renderRigs(walletDetails) {
-  $(".rigs .rigscontainer").html("");
+  var worker_amount = walletDetails.perWorkerStats.length;
 
-  for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
-    let active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true;
+  for (let i = 0; i < worker_amount; i++) {
+    let active = (walletDetails.perWorkerStats[i].hashrate !== undefined);
     let activeClass = (active) ? "active" : "";
     let hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
-
     let invalidHashes, expiredHashes;
 
     // Calculate Percentage of Invalid Hashes
-    if (walletDetails.perWorkerStats[i].invalid === undefined) {
-        invalidHashes = "0";
+    if (walletDetails.perWorkerStats[i].invalid !== undefined) {
+      const hashes = walletDetails.perWorkerStats[i].hashes - walletDetails.perWorkerStats[i].invalid;
+      const invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / hashes * 100);
+      invalidHashes = walletDetails.perWorkerStats[i].invalid + ` (${invalidHashesPercentage.toFixed(2)}%)`;
     } else {
-        invalidHashes = walletDetails.perWorkerStats[i].invalid;
-        const hashes = walletDetails.perWorkerStats[i].hashes - invalidHashes;
-        const invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / hashes * 100);
-        invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
+      invalidHashes = "0";
     }
 
     // Calculate Percentage of Expired Hashes
-    if (walletDetails.perWorkerStats[i].expired === undefined) {
-        expiredHashes = "0";
+    if (walletDetails.perWorkerStats[i].expired !== undefined) {
+      const hashes = walletDetails.perWorkerStats[i].hashes - walletDetails.perWorkerStats[i].expired;
+      const expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / hashes * 100);
+      expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
     } else {
-        expiredHashes = walletDetails.perWorkerStats[i].expired;
-        const hashes = walletDetails.perWorkerStats[i].hashes - expiredHashes;
-        const expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / hashes * 100);
-        expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
+      expiredHashes = "0";
     }
 
-    if (active) {
-      workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 10);
-      $(".rigs .rigscontainer").append(`
-      <div class="rig ${activeClass}">
-        <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+    var workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 10);
+    var lastShareTime = formatLastShareDate(walletDetails.perWorkerStats[i].lastShare);
+
+    // Find existing elements and update their content
+    var $existingRig = $(".rigs .rigscontainer #rig_2miners").eq(i);
+    if ($existingRig.length > 0) {
+      // Update the content of existing element
+      $existingRig.html(`
+        <img src="./homePage/res/2miners.png" style="padding-right: 8px; height: 20px">
         <p class="name">${workerId}</p>
         <div class="data">
           <div class="collumn">
@@ -137,62 +138,35 @@ function renderRigs(walletDetails) {
             <p class="big">${invalidHashes}</p>
           </div>
           <div class="collumn">
-            <p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p>
+            <p class="big">${lastShareTime}</p>
           </div>
         </div>
-      </div>
-    `)};
-  }
-
-  for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
-    let active = (walletDetails.perWorkerStats[i].hashrate === undefined) ? false : true;
-    let activeClass = (active) ? "active" : "";
-    let hashrate = (active) ? walletDetails.perWorkerStats[i].hashrate : "0 H";
-
-    let invalidHashes, expiredHashes;
-
-    // Calculate Percentage of Invalid Hashes
-    if (walletDetails.perWorkerStats[i].invalid === undefined) {
-        invalidHashes = "0";
+      `);
     } else {
-        invalidHashes = walletDetails.perWorkerStats[i].invalid;
-        const invalidHashesPercentage = (walletDetails.perWorkerStats[i].invalid / walletDetails.perWorkerStats[i].hashes * 100);
-        invalidHashes = walletDetails.perWorkerStats[i].expired + ` (${invalidHashesPercentage.toFixed(2)}%)`;
-    }
-
-    // Calculate Percentage of Expired Hashes
-    if (walletDetails.perWorkerStats[i].expired === undefined) {
-        expiredHashes = "0";
-    } else {
-        expiredHashes = walletDetails.perWorkerStats[i].expired;
-        const expiredHashesPercentage = (walletDetails.perWorkerStats[i].expired / walletDetails.perWorkerStats[i].hashes * 100);
-        expiredHashes = walletDetails.perWorkerStats[i].expired + ` (${expiredHashesPercentage.toFixed(2)}%)`;
-    }
-
-    if (!active) {
-      var workerId = trimString_x(walletDetails.perWorkerStats[i].workerId, 10);
+      // Create a new element
       $(".rigs .rigscontainer").append(`
-      <div class="rig ${activeClass}">
-        <img src="./homePage/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
-        <p class="name">${walletDetails.perWorkerStats[i].workerId}</p>
-        <div class="data">
-          <div class="collumn">
-            <p class="big">${hashrate}/s</p>
-          </div>
-          <div class="collumn" id="hashes">
-            <p class="big">${walletDetails.perWorkerStats[i].hashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${expiredHashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${invalidHashes}</p>
-          </div>
-          <div class="collumn">
-            <p class="big">${formatLastShareDate(walletDetails.perWorkerStats[i].lastShare)}</p>
+        <div class="rig ${activeClass}" id="rig_2miners">
+          <img src="./homePage/res/2miners.png" style="padding-right: 8px; height: 20px">
+          <p class="name">${workerId}</p>
+          <div class="data">
+            <div class="collumn">
+              <p class="big">${hashrate}/s</p>
+            </div>
+            <div class="collumn" id="hashes">
+              <p class="big">${walletDetails.perWorkerStats[i].hashes}</p>
+            </div>
+            <div class="collumn">
+              <p class="big">${expiredHashes}</p>
+            </div>
+            <div class="collumn">
+              <p class="big">${invalidHashes}</p>
+            </div>
+            <div class="collumn">
+              <p class="big">${lastShareTime}</p>
+            </div>
           </div>
         </div>
-      </div>
-    `)};
+      `);
+    }
   }
 }

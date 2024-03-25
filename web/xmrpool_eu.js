@@ -65,49 +65,42 @@ export {init_xmrpool_eu}
 
 
 function renderRigs(walletDetails) {
-  // loop through every miner
-  for (let i = 0; i < walletDetails.perWorkerStats.length; i++) {
+  // Initialize worker amount
+  var worker_amount = walletDetails.perWorkerStats.length;
 
-    // sort list by selected order
+  // Loop through every miner
+  for (let i = 0; i < worker_amount; i++) {
+    // Sort list by selected order
     let SortingOrder = localStorage.getItem("sortingOrder");
     if (SortingOrder == 1) { // Hashrate
       walletDetails.perWorkerStats.sort((a, b) => unformatHashrate(b.hashrate) - unformatHashrate(a.hashrate))
-    };
-    if (SortingOrder == 2) { // Accepted Hashes
+    } else if (SortingOrder == 2) { // Accepted Hashes
       walletDetails.perWorkerStats.sort((a, b) => b.hashes - a.hashes)
-    };
-    if (SortingOrder == 3) { // Expired Hashes
+    } else if (SortingOrder == 3) { // Expired Hashes
       walletDetails.perWorkerStats.sort((a, b) => removePercentage(b.expired) - removePercentage(a.expired))
-    };
-    if (SortingOrder == 4) { // Invalid Hashes
+    } else if (SortingOrder == 4) { // Invalid Hashes
       walletDetails.perWorkerStats.sort((a, b) => removePercentage(b.invalid) - removePercentage(a.invalid))
-    };
-    if (SortingOrder == 5) { // Last Share Time
+    } else if (SortingOrder == 5) { // Last Share Time
       walletDetails.perWorkerStats.sort((a, b) => b.lastShare - a.lastShare)
-    };
-    if (SortingOrder == 6 || SortingOrder == null) { // sort by active/offline default
+    } else { // Sort by active/offline default
       walletDetails.perWorkerStats.sort((a, b) => 0 - unformatHashrate(a.hashrate))
-    };
+    }
 
+    // Definitions
+    var workerId = walletDetails.perWorkerStats[i].workerId;
+    var Hashrate = walletDetails.perWorkerStats[i].hashrate;
+    var AllHashes = walletDetails.perWorkerStats[i].hashes;
+    var ExpiredHashes = walletDetails.perWorkerStats[i].expired;
+    var InvalidHashes = walletDetails.perWorkerStats[i].invalid;
+    var lastShareTime = walletDetails.perWorkerStats[i].lastShare;
 
-    // definitions
-    var workerId       = walletDetails.perWorkerStats[i].workerId
-    var Hashrate       = walletDetails.perWorkerStats[i].hashrate
-    var AllHashes      = walletDetails.perWorkerStats[i].hashes
-    var ExpiredHashes  = walletDetails.perWorkerStats[i].expired
-    var InvalidHashes  = walletDetails.perWorkerStats[i].invalid
-    var lastShareTime  = walletDetails.perWorkerStats[i].lastShare
-
-    // check if miner is active
-    let active = (Hashrate === undefined) ? false : true;
+    // Check if miner is active
+    let active = (Hashrate !== undefined);
     let activeClass = (active) ? "active" : "";
     let HashrateFull = (active) ? Hashrate : "0 H";
 
-    // Display values
-    var invalidHashesFull, expiredHashesFull, workerIdFull, lastShareTimeFull
-
-
     // Calculate Percentage of Invalid Hashes
+    var invalidHashesFull;
     if (InvalidHashes !== undefined) {
       const hashes = AllHashes - InvalidHashes;
       const invalidHashesPercentage = (InvalidHashes / hashes * 100);
@@ -117,6 +110,7 @@ function renderRigs(walletDetails) {
     }
 
     // Calculate Percentage of Expired Hashes
+    var expiredHashesFull;
     if (ExpiredHashes !== undefined) {
       const hashes = AllHashes - ExpiredHashes;
       const expiredHashesPercentage = (ExpiredHashes / hashes * 100);
@@ -125,31 +119,45 @@ function renderRigs(walletDetails) {
       expiredHashesFull = "0";
     }
 
-    workerIdFull = trimString_x(workerId, 10);
-    lastShareTimeFull = format_UNIX_time(lastShareTime, "ago")
+    var workerIdFull = trimString_x(workerId, 10);
+    var lastShareTimeFull = format_UNIX_time(lastShareTime, "ago");
 
-    $(".rigs .rigscontainer").append(`
-    <div class="rig ${activeClass}">
-      <img src="./shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
-      <p class="name">${workerIdFull}</p>
-      <div class="data">
-        <div class="column">
-          <p class="big">${HashrateFull}/s</p>
-        </div>
-        <div class="column" id="hashes">
-          <p class="big">${AllHashes}</p>
-        </div>
-        <div class="column">
-          <p class="big">${expiredHashesFull}</p>
-        </div>
-        <div class="column">
-          <p class="big">${invalidHashesFull}</p>
-        </div>
-        <div class="column">
-          <p class="big">${lastShareTimeFull}</p>
-        </div>
-      </div>
-    </div>
-    `);
+    // Find existing elements and update their content
+    var $existingRigs = $(".rigs .rigscontainer #rig_xmrpool_eu").eq(i);
+    if ($existingRigs.length > 0) {
+      // Update the content of existing elements
+      $existingRigs.find('.name').text(workerIdFull);
+      $existingRigs.find('.hashrate').text(HashrateFull + "/s");
+      $existingRigs.find('#hashes').text(AllHashes);
+      $existingRigs.find('.expired').text(expiredHashesFull);
+      $existingRigs.find('.invalid').text(invalidHashesFull);
+      $existingRigs.find('.last-share').text(lastShareTimeFull);
+    } else {
+      // Create a new element
+      var newElement = `
+        <div class="rig ${activeClass}" id="rig_xmrpool_eu">
+          <img src="./shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
+          <p class="name">${workerIdFull}</p>
+          <div class="data">
+            <div class="column">
+              <p class="big">${HashrateFull}/s</p>
+            </div>
+            <div class="column" id="hashes">
+              <p class="big">${AllHashes}</p>
+            </div>
+            <div class="column">
+              <p class="big">${expiredHashesFull}</p>
+            </div>
+            <div class="column">
+              <p class="big">${invalidHashesFull}</p>
+            </div>
+            <div class="column">
+              <p class="big">${lastShareTimeFull}</p>
+            </div>
+          </div>
+        </div>`;
+      // Append the new element to the container
+      $(".rigs .rigscontainer").append(newElement);
+    }
   }
 }
