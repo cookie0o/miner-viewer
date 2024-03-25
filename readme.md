@@ -9,7 +9,7 @@ Complete Recode for better performance, looks, and scalability.
 </div>    
 
 #### Supported Pools (only MONERO[XMR])
-[xmrpool](https://web.xmrpool.eu) (main/good supp.!)
+[xmrpool](https://web.xmrpool.eu) (main/good supp.!)   
 [2miners](https://2miners.com) [nanopool](https://xmr.nanopool.org)  (beta/partial supp.!) 
 (more in the future!)
 
