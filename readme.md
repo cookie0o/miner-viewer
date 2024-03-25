@@ -8,8 +8,9 @@ Complete Recode for better performance, looks, and scalability.
   <img src="https://github.com/sch-raphael/miner-viewer/assets/81589649/d189f6a8-8431-42bb-9e61-a71d9ff1fbb7" style="height: 213px;"> 
 </div>    
 
-#### Supported Pools
-[xmrpool](https://web.xmrpool.eu), [nanopool](https://xmr.nanopool.org) (beta/partial supp.!)  
+#### Supported Pools (only MONERO[XMR])
+[xmrpool](https://web.xmrpool.eu) (main/good supp.!)
+[2miners](https://2miners.com) [nanopool](https://xmr.nanopool.org)  (beta/partial supp.!) 
 (more in the future!)
 
 ## Contributors
