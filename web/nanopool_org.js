@@ -97,49 +97,38 @@ export {init_nanopool_org}
 
 
 function renderRigs(walletDetails, minerDetails) {
-  //$(".rigs .rigscontainer").html(""); // must change!
+  var numberOfExistingElements = $(".rigs .rigscontainer .rig_nanopool").length;
+  var requiredNumberOfElements = minerDetails.data.length;
 
-  // loop through every miner
-  for (let i = 0; i < minerDetails.data.length; i++) {
-
-    // sort list by selected order
+  for (let i = 0; i < requiredNumberOfElements; i++) {
+    // Sort list by selected order
     var SortingOrder = localStorage.getItem("sortingOrder");
     if (SortingOrder == 1) { // Hashrate
       minerDetails.data.sort((a, b) => b.hashrate - a.hashrate)
-    };
-    if (SortingOrder == 2) { // Accepted Hashes
-      // not supported right now
-    };
-    if (SortingOrder == 3) { // Expired Hashes
-      // not supported right now
-    };
-    if (SortingOrder == 4) { // Invalid Hashes
-      // not supported right now
-    };
-    if (SortingOrder == 5) { // Last Share Time
+    } else if (SortingOrder == 5) { // Last Share Time
       minerDetails.data.sort((a, b) => b.lastShare - a.lastShare)
-    };
-    if (SortingOrder == null) { // Don´t sort
-      // don´t sort since nothing is selected
-    };
+    } else if (SortingOrder == null) { // Don't sort
+      // Don't sort since nothing is selected
+    }
 
+    // Definitions
+    var workerId = minerDetails.data[i].id;
+    var Hashrate = minerDetails.data[i].hashrate;
+    var lastShareTime = minerDetails.data[i].lastShare;
 
-    // definitions
-    var workerId       = minerDetails.data[i].id
-    var Hashrate       = minerDetails.data[i].hashrate
-    var AllHashes      = 0//minerDetails.data[i].
-    var ExpiredHashes  = 0//minerDetails.data[i].
-    var InvalidHashes  = 0//minerDetails.data[i].
-    var lastShareTime  = minerDetails.data[i].lastShare
+    // Calculate AllHashes, ExpiredHashes, and InvalidHashes
+    // Assuming these values are not provided in minerDetails.data, set them to 0 for now
+    var AllHashes = 0;
+    var ExpiredHashes = 0;
+    var InvalidHashes = 0;
 
-    // check if miner is active
-    let active = (Hashrate === undefined) ? false : true;
+    // Check if miner is active
+    let active = (Hashrate !== undefined);
     let activeClass = (active) ? "active" : "";
     let HashrateFull = (active) ? Hashrate : "0 H";
 
     // Display values
-    var invalidHashesFull, expiredHashesFull, workerIdFull, lastShareTimeFull
-
+    var invalidHashesFull, expiredHashesFull, workerIdFull, lastShareTimeFull;
 
     // Calculate Percentage of Invalid Hashes
     if (InvalidHashes !== undefined) {
@@ -160,30 +149,61 @@ function renderRigs(walletDetails, minerDetails) {
     }
 
     workerIdFull = trimString_x(workerId, 10);
-    lastShareTimeFull = format_UNIX_time(lastShareTime, "ago")
+    lastShareTimeFull = format_UNIX_time(lastShareTime, "ago");
 
-    $(".rigs .rigscontainer").append(`
-    <div class="rig ${activeClass}">
-      <img src="./shared/res/xmrpool_eu.png" style="padding-right: 8px; height: 20px">
-      <p class="name">${workerIdFull}</p>
-      <div class="data">
-        <div class="column">
-          <p class="big">${HashrateFull}/s</p>
+    // Find existing element and update its content if it exists
+    var $existingRig = $(".rigs .rigscontainer #rig_nanopool").eq(i);
+    if ($existingRig.length > 0) {
+      // Update the content of existing element
+      $existingRig.html(`
+        <img src="./shared/res/nanopool_org.png" style="padding-right: 8px; height: 20px">
+        <p class="name">${workerIdFull}</p>
+        <div class="data">
+          <div class="column">
+            <p class="big">${HashrateFull}/s</p>
+          </div>
+          <div class="column" id="hashes">
+            <p class="big">${AllHashes}</p>
+          </div>
+          <div class="column">
+            <p class="big">${expiredHashesFull}</p>
+          </div>
+          <div class="column">
+            <p class="big">${invalidHashesFull}</p>
+          </div>
+          <div class="column">
+            <p class="big">${lastShareTimeFull}</p>
+          </div>
         </div>
-        <div class="column" id="hashes">
-          <p class="big">${AllHashes}</p>
+      `);
+    } else {
+      // Create a new element
+      $(".rigs .rigscontainer").append(`
+        <div class="rig ${activeClass}" id="rig_nanopool">
+          <img src="./shared/res/nanopool_org.png" style="padding-right: 8px; height: 20px">
+          <p class="name">${workerIdFull}</p>
+          <div class="data">
+            <div class="column">
+              <p class="big">${HashrateFull}/s</p>
+            </div>
+            <div class="column" id="hashes">
+              <p class="big">${AllHashes}</p>
+            </div>
+            <div class="column">
+              <p class="big">${expiredHashesFull}</p>
+            </div>
+            <div class="column">
+              <p class="big">${invalidHashesFull}</p>
+            </div>
+            <div class="column">
+              <p class="big">${lastShareTimeFull}</p>
+            </div>
+          </div>
         </div>
-        <div class="column">
-          <p class="big">${expiredHashesFull}</p>
-        </div>
-        <div class="column">
-          <p class="big">${invalidHashesFull}</p>
-        </div>
-        <div class="column">
-          <p class="big">${lastShareTimeFull}</p>
-        </div>
-      </div>
-    </div>
-    `);
+      `);
+    }
   }
+
+  // Remove extra elements if there are more existing elements than required
+  $(".rigs .rigscontainer #rig_nanopool").slice(requiredNumberOfElements).remove();
 }

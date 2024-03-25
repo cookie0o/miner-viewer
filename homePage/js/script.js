@@ -12,6 +12,8 @@ sorting_comboBox.addEventListener("change", function() {
     const selectedValue = sorting_comboBox.value;
     // save sorting order in storage
     localStorage.setItem("sortingOrder", selectedValue);
+    // reload
+    window.location.reload();
 });
 // change comboBox value to stored value
 function sort() {
