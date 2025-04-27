@@ -1,3 +1,6 @@
+# ⚠️ This Repo is no longer maintained! ⚠️
+**Use the alternative https://github.com/cookie0o/Pool-viewer**
+
 # A Page for simultaneously viewing your miners, payments, and more from different pools.
 View at: [https://cookie0o.github.io/miner-viewer](https://cookie0o.github.io/miner-viewer)
 
